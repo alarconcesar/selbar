@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selbar · Selecciona un texto, pulsa el atajo y resuelve (Windows)</title>
+  <meta name="description" content="Selecciona texto en Word, el correo, un PDF o WhatsApp y pulsa Ctrl + Shift + Espacio. Limpia enlaces, resume, corrige, traduce y saca el texto de una imagen sin cambiar de ventana." />
+  <link rel="canonical" href="https://alarconcesar.github.io/selbar/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Selbar" />
+  <meta property="og:title" content="Selbar · Selecciona un texto, pulsa el atajo y resuelve (Windows)" />
+  <meta property="og:description" content="Selecciona texto en Word, el correo, un PDF o WhatsApp y pulsa Ctrl + Shift + Espacio. Limpia enlaces, resume, corrige, traduce y saca el texto de una imagen sin cambiar de ventana." />
+  <meta property="og:url" content="https://alarconcesar.github.io/selbar/" />
+  <meta property="og:image" content="https://alarconcesar.github.io/selbar/assets/og-selbar.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Selbar · Selecciona un texto, pulsa el atajo y resuelve (Windows)" />
+  <meta name="twitter:description" content="Selecciona texto en Word, el correo, un PDF o WhatsApp y pulsa Ctrl + Shift + Espacio. Limpia enlaces, resume, corrige, traduce y saca el texto de una imagen sin cambiar de ventana." />
+  <meta name="twitter:image" content="https://alarconcesar.github.io/selbar/assets/og-selbar.png" />
+  <link rel="icon" href="./favicon.ico" sizes="32x32" />
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+  <link rel="manifest" href="./site.webmanifest" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Selbar","operatingSystem":"Windows 10, Windows 11","applicationCategory":"UtilitiesApplication","softwareVersion":"0.13.6","inLanguage":"es","url":"https://alarconcesar.github.io/selbar","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Barra de acciones rápida para Windows sobre el texto que seleccionas. Limpia enlaces, lee texto de imágenes, crea códigos QR y resume o corrige sin cambiar de ventana."}</script>
+  <script type="module" crossorigin src="./assets/main-DIk294JU.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/main-DAk2SBkb.css">
+</head>
+<body class="bg-[#eef1f5] text-slate-700 antialiased selection:bg-[#2a6573]/20 selection:text-slate-900 relative">
+  <!-- Living light ambient canvas behind all sections -->
+  <div class="bg-ambient" aria-hidden="true">
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+    <canvas id="living-bg-canvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
+    <div id="bg-spotlight" class="bg-spotlight"></div>
+  </div>
+
+  <a href="#contenido" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:rounded-lg focus:bg-[#2a6573] focus:text-white">Saltar al contenido</a>
+
+  <!-- Floating Island Navbar -->
+  <header class="fixed top-4 inset-x-0 z-40 px-4 pointer-events-none">
+    <div class="max-w-5xl mx-auto pointer-events-auto">
+      <nav aria-label="Navegación principal" class="island-nav relative overflow-hidden rounded-full px-4 sm:px-5 h-14 flex items-center justify-between gap-4">
+        <a href="./" class="flex items-center shrink-0 focus:outline-none">
+          <img src="./assets/selbar-logo.svg" alt="Selbar" width="203" height="64" class="h-8 w-auto" />
+        </a>
+
+        <div class="hidden md:flex items-center gap-6 text-sm text-slate-700">
+          <a href="./index.html#como-funciona" class="hover:text-slate-900 transition-colors">Cómo funciona</a>
+          <a href="./index.html#funciones" class="hover:text-slate-900 transition-colors">Qué hace</a>
+          <a href="./oficinas-y-pc-bloqueada/index.html" class="hover:text-slate-900 transition-colors">Oficinas</a>
+          <a href="./comparativa/index.html" class="hover:text-slate-900 transition-colors">Comparativa</a>
+          <a href="./privacidad/index.html" class="hover:text-slate-900 transition-colors">Privacidad</a>
+        </div>
+
+        <div class="flex items-center gap-2.5">
+          <a href="./index.html#descarga" class="btn-press hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#2a6573] hover:bg-[#21535f] text-white text-xs font-medium">
+            <svg class="w-4 h-4 shrink-0" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"><path d="M128 32v136"/><polyline points="72 112 128 168 184 112"/><path d="M40 168v32a16 16 0 0 0 16 16h144a16 16 0 0 0 16-16v-32"/></svg>
+            <span>Descargar gratis</span>
+          </a>
+          <button id="mobile-nav-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" class="btn-press md:hidden w-10 h-10 rounded-full border border-slate-200 bg-white flex flex-col items-center justify-center gap-1.5 text-slate-700 cursor-pointer">
+            <span class="burger-line burger-line-1 w-4 h-0.5 bg-current rounded-full"></span>
+            <span class="burger-line burger-line-2 w-4 h-0.5 bg-current rounded-full"></span>
+          </button>
+        </div>
+        <span id="scroll-progress" aria-hidden="true" class="scroll-progress pointer-events-none absolute bottom-0 left-6 right-6 h-[2px] rounded-full bg-[#2a6573]/75"></span>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer (uses visibility + opacity, never mount/unmount) -->
+  <div id="mobile-nav-drawer" class="fixed inset-0 z-30 bg-white/95 backdrop-blur-xl pt-24 px-6 pb-8 flex flex-col justify-between transition-all duration-200 md:hidden" style="visibility: hidden; opacity: 0; pointer-events: none;">
+    <div class="space-y-2">
+      <a href="./" class="block px-4 py-3 rounded-xl text-base font-medium text-slate-900 bg-slate-100 border border-slate-200">Inicio</a>
+      <a href="./index.html#como-funciona" class="block px-4 py-3 rounded-xl text-base text-slate-700 hover:bg-slate-100">Cómo funciona</a>
+      <a href="./index.html#funciones" class="block px-4 py-3 rounded-xl text-base text-slate-700 hover:bg-slate-100">Qué hace</a>
+      <a href="./oficinas-y-pc-bloqueada/index.html" class="block px-4 py-3 rounded-xl text-base text-slate-700 hover:bg-slate-100">Oficinas y PCs con restricciones</a>
+      <a href="./comparativa/index.html" class="block px-4 py-3 rounded-xl text-base text-slate-700 hover:bg-slate-100">Comparativa honesta</a>
+      <a href="./privacidad/index.html" class="block px-4 py-3 rounded-xl text-base text-slate-700 hover:bg-slate-100">Privacidad</a>
+      <a href="./problemas-conocidos/index.html" class="block px-4 py-3 rounded-xl text-base text-slate-700 hover:bg-slate-100">Ayuda y compatibilidad</a>
+    </div>
+    <a href="./index.html#descarga" class="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-[#2a6573] text-white text-sm font-medium">
+      <svg class="w-4 h-4 shrink-0" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"><path d="M128 32v136"/><polyline points="72 112 128 168 184 112"/><path d="M40 168v32a16 16 0 0 0 16 16h144a16 16 0 0 0 16-16v-32"/></svg>
+      <span>Descargar gratis para Windows</span>
+    </a>
+  </div>
+
+  <main id="contenido" class="relative z-10 pt-24">
+    
+  <section id="hero-section" class="relative overflow-hidden">
+    <div class="hero-mesh-wash absolute inset-0 pointer-events-none" aria-hidden="true"></div>
+    <div class="relative max-w-5xl mx-auto px-4 sm:px-6 pt-6 sm:pt-10 pb-12 sm:pb-16 text-center">
+
+      <div class="hero-enter inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-300 text-xs text-slate-700" style="--d:0ms;">
+        <span class="pulse-dot w-1.5 h-1.5 rounded-full bg-[#2a6573]"></span>
+        Windows 10 y 11 · Gratis y código abierto
+      </div>
+
+      <h1 class="hero-enter mt-5 text-4xl leading-[1.08] sm:text-5xl sm:leading-[1.06] font-semibold tracking-tight max-w-[680px] mx-auto" style="--d:55ms;">
+        <span class="hero-title-gradient">Una barra rápida sobre</span>
+        <br class="hidden sm:inline" />
+        <span class="hero-title-gradient">el texto que seleccionas</span>
+      </h1>
+
+      <p class="hero-enter mt-4 text-base sm:text-lg text-slate-700 max-w-[680px] mx-auto leading-relaxed" style="--d:110ms;">
+        Marca una frase, un enlace, una fecha o un monto en cualquier programa y pulsa <span class="font-medium text-slate-900 whitespace-nowrap">Ctrl + Shift + Espacio</span>. Corrige, resume, traduce, calcula, limpia enlaces o saca texto de imágenes sin cambiar de ventana.
+      </p>
+
+      <div class="hero-enter mt-7 flex flex-col sm:flex-row items-center justify-center gap-3" style="--d:165ms;">
+        <a href="#descarga" class="btn-press w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#2a6573] hover:bg-[#21535f] text-white text-sm font-medium">
+          <svg class="w-4 h-4 shrink-0" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"><path d="M128 32v136"/><polyline points="72 112 128 168 184 112"/><path d="M40 168v32a16 16 0 0 0 16 16h144a16 16 0 0 0 16-16v-32"/></svg>
+          <span>Descargar gratis</span>
+        </a>
+        <a href="#como-funciona" class="btn-press w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white border border-slate-300 hover:border-slate-400 text-slate-700 text-sm font-medium">
+          <span>Cómo funciona</span>
+          <svg class="w-4 h-4 shrink-0" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"><line x1="40" y1="128" x2="216" y2="128"/><polyline points="144 56 216 128 144 200"/></svg>
+        </a>
+      </div>
+
+      <!-- Visual protagonista único (vivo e interactivo) -->
+      <div id="hero-stage" class="hero-enter mt-9 sm:mt-11 max-w-3xl mx-auto text-left relative" style="--d:220ms;">
+        <div class="absolute -inset-x-12 -top-8 bottom-0 soft-halo blur-2xl hidden sm:block"></div>
+
+        <!-- Acciones fantasma: flotan suavemente y reaccionan al puntero en desktop -->
+        <div class="hidden xl:block ghost-chip" data-parallax="-0.7" data-rot="-4" style="top:14%; left:-138px; transform: rotate(-4deg);">
+          <span class="ghost-chip-inner" style="--float-dur:5.4s; --float-delay:-0.8s;">Resumir <strong>correo</strong></span>
+        </div>
+        <div class="hidden xl:block ghost-chip" data-parallax="0.85" data-rot="-2" style="top:52%; left:-152px; transform: rotate(-2deg);">
+          <span class="ghost-chip-inner" style="--float-dur:6.4s; --float-delay:-2.9s;">Cambiar <strong>tono</strong></span>
+        </div>
+        <div class="hidden xl:block ghost-chip" data-parallax="0.75" data-rot="3" style="top:26%; right:-132px; transform: rotate(3deg);">
+          <span class="ghost-chip-inner" style="--float-dur:5.9s; --float-delay:-1.7s;">Calcular <strong>fecha</strong></span>
+        </div>
+        <div class="hidden xl:block ghost-chip" data-parallax="-0.9" data-rot="-3" style="top:64%; right:-150px; transform: rotate(-3deg);">
+          <span class="ghost-chip-inner" style="--float-dur:6.8s; --float-delay:-3.6s;">Generar <strong>QR</strong></span>
+        </div>
+
+        <div id="hero-mockup" class="selbar-window overflow-hidden relative">
+          <div class="flex items-center gap-2 px-4 py-2.5 border-b border-slate-200/80 bg-[#f8fafc]">
+            <span id="hero-app-badge" class="w-4 h-4 rounded bg-[#0f6cbd]/10 text-[9px] font-bold text-[#0f6cbd] flex items-center justify-center">O</span>
+            <span id="hero-doc-title" class="text-xs text-slate-600 truncate">Correo a proveedor · Outlook</span>
+            <span id="hero-ab-pill" data-state="before" class="hero-ab-pill ml-auto shrink-0 inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-medium">
+              <span class="hero-ab-dot w-1.5 h-1.5 rounded-full"></span>
+              <span id="hero-ab-label">Antes</span>
+            </span>
+          </div>
+
+          <div class="px-5 sm:px-10 py-7 sm:py-9 relative">
+            <p id="hero-doc-intro" class="text-sm sm:text-base text-slate-600 leading-relaxed">
+              Estimada Carla, confirmo el envío de los archivos:
+            </p>
+
+            <!-- Barrita flotante interactiva -->
+            <div id="hero-bar-demo" class="bar-pop my-4 flex flex-wrap items-center gap-1 p-1.5 rounded-xl bg-white border border-slate-200 shadow-[0_14px_36px_rgba(15,23,42,0.14)]">
+              <button type="button" data-hero-action="corregir" aria-pressed="true" class="hero-chip-btn inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium cursor-pointer bg-[#2a6573] text-white">
+                Corregir
+              </button><button type="button" data-hero-action="resumir" aria-pressed="false" class="hero-chip-btn inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium cursor-pointer text-slate-700 hover:bg-slate-100">
+                Resumir
+              </button><button type="button" data-hero-action="traducir" aria-pressed="false" class="hero-chip-btn inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium cursor-pointer text-slate-700 hover:bg-slate-100">
+                Traducir
+              </button><button type="button" data-hero-action="calcular" aria-pressed="false" class="hero-chip-btn inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium cursor-pointer text-slate-700 hover:bg-slate-100">
+                Calcular
+              </button><button type="button" data-hero-action="fechas" aria-pressed="false" class="hero-chip-btn inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium cursor-pointer text-slate-700 hover:bg-slate-100">
+                Fechas
+              </button><button type="button" data-hero-action="qr" aria-pressed="false" class="hero-chip-btn inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium cursor-pointer text-slate-700 hover:bg-slate-100">
+                QR
+              </button><button type="button" data-hero-action="limpiar" aria-pressed="false" class="hero-chip-btn inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium cursor-pointer text-slate-700 hover:bg-slate-100">
+                Limpiar enlace
+              </button>
+            </div>
+
+            <div id="hero-doc-body" class="hero-doc-body text-[15px] sm:text-[17px] leading-[1.85] text-slate-800">
+              <p id="hero-doc-before" class="hero-doc-layer hero-doc-before">
+                <span class="hero-sel">Havia quedado pendiente revisar la cotisación antes del miercoles</span>, así que te la envío hoy.
+              </p>
+              <p id="hero-doc-after" class="hero-doc-layer hero-doc-after" aria-hidden="true">
+                <span class="hero-changed">Había</span> quedado pendiente revisar la <span class="hero-changed">cotización</span> antes del <span class="hero-changed">miércoles</span>, así que te la envío hoy.
+              </p>
+              <span class="hero-doc-scan" aria-hidden="true"></span>
+            </div>
+
+            <div id="hero-result-wrap" class="mt-6 pt-5 border-t border-slate-300/80 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:text-[13px]">
+              <span id="hero-result-label" class="inline-flex items-center gap-1.5 font-medium text-[#2a6573]"><span class="inline-flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span><span class="text-slate-600">Corregir · pendiente</span></span></span>
+              <span id="hero-result-text" class="text-slate-600">El texto sigue igual</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="hero-enter mt-5 text-xs sm:text-[13px] text-slate-600" style="--d:265ms;">
+        Toca cualquier botón de la barra para ver el antes y el después en el mismo texto.
+      </p>
+      <p class="hero-enter mt-2 text-xs text-slate-600" style="--d:300ms;">
+        7 ejemplos visuales de 57 acciones incluidas · Sin cuenta ni telemetría
+      </p>
+    </div>
+  </section>
+
+  <section aria-hidden="true" class="border-y border-slate-200/70 bg-white/55 backdrop-blur-sm">
+    <div class="marquee py-3.5 sm:py-4">
+      <div class="marquee-track items-center gap-5 sm:gap-7 pr-5 sm:pr-7 text-xl sm:text-2xl font-medium tracking-tight text-slate-500">
+        <span class="shrink-0">Resumir</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span><span class="shrink-0">Corregir</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span><span class="shrink-0">Traducir</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span><span class="shrink-0">Limpiar enlace</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span><span class="shrink-0">Código QR</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span><span class="shrink-0">Qué día cae</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span><span class="shrink-0">Porcentajes</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span><span class="shrink-0">Unidades</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span><span class="shrink-0">Mayúsculas</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span><span class="shrink-0">Ordenar</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span>
+        <span class="shrink-0">Resumir</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span><span class="shrink-0">Corregir</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span><span class="shrink-0">Traducir</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span><span class="shrink-0">Limpiar enlace</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span><span class="shrink-0">Código QR</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span><span class="shrink-0">Qué día cae</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span><span class="shrink-0">Porcentajes</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span><span class="shrink-0">Unidades</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span><span class="shrink-0">Mayúsculas</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span><span class="shrink-0">Ordenar</span><span class="shrink-0 text-[#2a6573]/35 text-base sm:text-lg">·</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="como-funciona" class="pt-10 sm:pt-12 pb-6 sm:pb-8 scroll-mt-24 sm:scroll-mt-28">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="text-center max-w-xl mx-auto">
+        <h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-slate-900">
+          Cómo funciona en tres segundos
+        </h2>
+        <p class="mt-2.5 text-sm sm:text-base text-slate-700">
+          No reemplaza tus programas ni te interrumpe cuando lees. La llamas solo cuando la necesitas.
+        </p>
+      </div>
+
+      <div class="mt-8 grid md:grid-cols-3 gap-5">
+        
+          <div class="fluent-card reveal-item p-5 sm:p-6 min-w-0 flex flex-col justify-between" data-reveal style="--stagger:0ms;">
+            <div>
+              <span class="bento-index">PASO 01</span>
+              <h3 class="mt-2 text-base font-semibold text-slate-900">Selecciona texto o captura</h3>
+              <p class="mt-1.5 text-[13px] text-slate-600 leading-relaxed">Marca una frase en Word, WhatsApp o Chrome. Si está en una foto o PDF escaneado, recorta esa zona.</p>
+            </div>
+            <div class="mt-4 rounded-xl bg-[#f8fafc] border border-slate-200/90 px-3.5 py-2.5 text-xs text-slate-700 flex items-center justify-between gap-2">
+        <span>Total: <span class="rounded bg-[#2a6573]/15 px-1.5 py-0.5 font-medium text-slate-900 ring-1 ring-[#2a6573]/30">1,800 + 18%</span></span>
+        <span class="text-[11px] text-slate-600">o recorte</span>
+      </div>
+          </div>
+          <div class="fluent-card reveal-item p-5 sm:p-6 min-w-0 flex flex-col justify-between" data-reveal style="--stagger:60ms;">
+            <div>
+              <span class="bento-index">PASO 02</span>
+              <h3 class="mt-2 text-base font-semibold text-slate-900">Pulsa el atajo</h3>
+              <p class="mt-1.5 text-[13px] text-slate-600 leading-relaxed">La barrita aparece junto al cursor solo con las acciones que sirven para lo que marcaste, sin menús largos.</p>
+            </div>
+            <div class="mt-4 rounded-xl bg-[#f8fafc] border border-slate-200/90 px-3.5 py-2.5 flex flex-wrap items-center gap-1.5">
+        <kbd class="kbd-cap">Ctrl</kbd>
+        <span class="text-xs text-slate-600">+</span>
+        <kbd class="kbd-cap">Shift</kbd>
+        <span class="text-xs text-slate-600">+</span>
+        <kbd class="kbd-cap">Espacio</kbd>
+      </div>
+          </div>
+          <div class="fluent-card reveal-item p-5 sm:p-6 min-w-0 flex flex-col justify-between" data-reveal style="--stagger:120ms;">
+            <div>
+              <span class="bento-index">PASO 03</span>
+              <h3 class="mt-2 text-base font-semibold text-slate-900">Elige y sigue en lo tuyo</h3>
+              <p class="mt-1.5 text-[13px] text-slate-600 leading-relaxed">Reemplaza el texto ahí mismo, lo copia listo para pegar, te muestra el dato o lo abre en Maps o WhatsApp.</p>
+            </div>
+            <div class="mt-4 rounded-xl bg-[#f8fafc] border border-slate-200/90 px-3.5 py-2.5 flex flex-wrap items-center justify-between gap-1.5 text-[11px]">
+        <span class="font-semibold text-[#1c5967]">= 2,124</span>
+        <span class="inline-flex items-center gap-1">
+          <span class="rounded-md bg-[#ebf5f7] border border-[#2a6573]/35 px-1.5 py-0.5 font-medium text-[#134e5c]">Reemplaza</span>
+          <span class="rounded-md bg-white border border-slate-300 px-1.5 py-0.5 text-slate-700">Copia</span>
+        </span>
+      </div>
+          </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="funciones" class="relative overflow-hidden pt-8 sm:pt-10 pb-12 sm:pb-14 scroll-mt-24 sm:scroll-mt-28">
+    <div class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[720px] h-[420px] soft-halo-breathe blur-3xl opacity-80" aria-hidden="true"></div>
+    <div class="relative max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="text-center max-w-xl mx-auto">
+        <h2 class="text-2xl sm:text-4xl font-semibold tracking-tight text-slate-900">
+          Qué resuelve sin abrir otra pestaña
+        </h2>
+        <p class="mt-3 text-sm sm:text-base text-slate-700">
+          Trae 57 acciones listas (27 activas al inicio para no estorbar). Lo esencial corre en tu PC sin internet; la IA es opcional.
+        </p>
+      </div>
+
+      <div class="mt-10 grid md:grid-cols-2 gap-5">
+
+        <!-- Card 1: Limpiar enlaces -->
+        <div class="fluent-card reveal-item relative overflow-hidden p-6 min-w-0 flex flex-col justify-between" data-reveal style="--stagger:0ms;">
+          <div class="pointer-events-none absolute -top-16 -right-16 w-48 h-48 rounded-full bg-[radial-gradient(closest-side,rgba(42,101,115,0.10),transparent)]"></div>
+          <div>
+            <div class="flex items-center justify-between gap-3">
+              <h3 class="text-base font-semibold text-slate-900">Limpia enlaces y revisa destinos</h3>
+              <span class="bento-index">01</span>
+            </div>
+            <p class="mt-1 text-[13px] text-slate-600">Quita códigos de rastreo antes de enviar un link por WhatsApp o ve a dónde lleva un enlace acortado sin abrirlo.</p>
+          </div>
+          <div class="mt-5 rounded-xl bg-[#f8fafc] border border-slate-200/80 p-4 space-y-2 text-xs">
+            <div class="text-slate-600 line-through truncate">tienda.com/zapatillas?utm_source=ig&amp;fbclid=IwAR3x9K2pLm…</div>
+            <div class="utm-clean-shine inline-flex items-center gap-2 px-2 py-1 -mx-2 rounded-lg text-[#1c5967] font-medium">
+              <span class="text-[#2a6573]">→</span>
+              <span>tienda.com/zapatillas</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Sacar texto de imagen -->
+        <div class="fluent-card reveal-item relative overflow-hidden p-6 min-w-0 flex flex-col justify-between" data-reveal style="--stagger:60ms;">
+          <div class="pointer-events-none absolute -top-16 -right-16 w-48 h-48 rounded-full bg-[radial-gradient(closest-side,rgba(217,119,6,0.09),transparent)]"></div>
+          <div>
+            <div class="flex items-center justify-between gap-3">
+              <h3 class="text-base font-semibold text-slate-900">Saca texto de fotos y capturas</h3>
+              <span class="bento-index">02</span>
+            </div>
+            <p class="mt-1 text-[13px] text-slate-600">Recorta una boleta, una pizarra o un PDF escaneado que no deja copiar y obtén el texto directo en tu equipo.</p>
+          </div>
+          <div class="mt-5 rounded-xl bg-[#f8fafc] border border-slate-200/80 p-4 flex items-center gap-3 text-xs">
+            <div class="ocr-box w-20 h-14 rounded-lg border-2 border-dashed border-[#2a6573]/60 bg-white flex flex-col items-center justify-center shrink-0 text-[10px] text-[#2a6573] font-medium">
+              <span class="ocr-scan-line" aria-hidden="true"></span>
+              <svg class="w-5 h-5 shrink-0" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"><path d="M176 40h40v40"/><path d="M80 216H40v-40"/><path d="M216 176v40h-40"/><path d="M40 80V40h40"/><rect x="80" y="80" width="96" height="96" rx="8"/></svg>
+              <span class="mt-0.5">Captura</span>
+            </div>
+            <span class="text-[#2a6573] shrink-0">→</span>
+            <div class="text-slate-700 leading-snug">
+              <div class="font-medium text-slate-900">RUC 20512345678</div>
+              <div class="text-slate-600">Total S/ 148.00 · Listo para pegar</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Corregir viendo qué cambia -->
+        <div class="fluent-card reveal-item relative overflow-hidden p-6 min-w-0 flex flex-col justify-between" data-reveal style="--stagger:120ms;">
+          <div class="pointer-events-none absolute -top-16 -right-16 w-48 h-48 rounded-full bg-[radial-gradient(closest-side,rgba(5,150,105,0.09),transparent)]"></div>
+          <div>
+            <div class="flex items-center justify-between gap-3">
+              <h3 class="text-base font-semibold text-slate-900">Corrige, resume y traduce con control</h3>
+              <span class="bento-index">03</span>
+            </div>
+            <p class="mt-1 text-[13px] text-slate-600">Mira en rojo y verde qué cambia antes de tocar tu texto, resume párrafos largos o traduce usando tu propia clave.</p>
+          </div>
+          <div class="mt-5 rounded-xl bg-[#f8fafc] border border-slate-200/80 p-4 text-[13px] text-slate-700 leading-relaxed">
+            Hola equipo, <span class="diff-del">havia</span> <span class="diff-add diff-pulse">había</span> quedado pendiente enviar la <span class="diff-del">cotisación</span> <span class="diff-add diff-pulse diff-pulse-delay">cotización</span> de hoy.
+          </div>
+        </div>
+
+        <!-- Card 4: QR, fechas y cuentas -->
+        <div class="fluent-card reveal-item relative overflow-hidden p-6 min-w-0 flex flex-col justify-between" data-reveal style="--stagger:180ms;">
+          <div class="pointer-events-none absolute -top-16 -right-16 w-48 h-48 rounded-full bg-[radial-gradient(closest-side,rgba(37,99,235,0.08),transparent)]"></div>
+          <div>
+            <div class="flex items-center justify-between gap-3">
+              <h3 class="text-base font-semibold text-slate-900">Calcula, lee fechas y genera QR</h3>
+              <span class="bento-index">04</span>
+            </div>
+            <p class="mt-1 text-[13px] text-slate-600">Todo sin internet: porcentajes, conversiones de medidas, qué día cae una fecha y códigos QR al instante.</p>
+          </div>
+          <div class="mt-5 rounded-xl bg-[#f8fafc] border border-slate-200/80 p-3.5 flex items-center gap-3.5 text-xs">
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="text-[11px] text-slate-600 font-medium">URL →</span>
+              <svg class="w-14 h-14 shrink-0 rounded-lg bg-white p-1.5 border border-slate-200 text-slate-900" viewBox="0 0 29 29" fill="currentColor" aria-hidden="true">
+  <path d="M2 2h7v7H2zm2 2v3h3V4zm16-2h7v7h-7zm2 2v3h3V4zM2 20h7v7H2zm2 2v3h3v-3zm8-18h2v2h-2zm3 0h2v4h-2zm-3 4h2v2h-2zm3 3h2v2h-2zm-8 1h4v2H7zm6 0h3v2h-3zm5 0h2v3h-2zm3 0h4v2h-4zm-9 3h2v3h-2zm-9 1h3v2H3zm5 1h3v3H8zm6 1h2v2h-2zm3 0h3v3h-3zm5 1h4v2h-4zm-9 3h2v2h-2zm3 2h2v3h-2zm3 0h2v2h-2zm3-2h2v4h-2zm-9 3h2v2h-2zm12 0h4v4h-4zm-6 2h3v2h-3z"/>
+</svg>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <span class="compat-chip px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700">1800 + 18% = <strong class="text-[#2a6573]">2,124</strong></span>
+              <span class="compat-chip px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700">15 mar → <strong class="text-[#2a6573]">Lunes</strong></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Resumen completo de capacidades: local vs IA opcional -->
+      <div class="mt-5 grid md:grid-cols-2 gap-5">
+        <div class="fluent-card reveal-item p-6 min-w-0" data-reveal style="--stagger:40ms;">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="text-base font-semibold text-slate-900">Sin internet ni cuentas</h3>
+            <span class="badge-copia px-2.5 py-0.5 rounded-full text-[11px] font-medium shrink-0">Local en tu PC</span>
+          </div>
+          <p class="mt-1.5 text-[13px] text-slate-600">
+            Responde al instante en tu PC. Nada sale de tu equipo.
+          </p>
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            <span class="px-2.5 py-1 rounded-lg bg-[#f1f5f9] text-xs text-slate-700">MAYÚSCULAS / minúsculas</span><span class="px-2.5 py-1 rounded-lg bg-[#f1f5f9] text-xs text-slate-700">Contar palabras</span><span class="px-2.5 py-1 rounded-lg bg-[#f1f5f9] text-xs text-slate-700">Quitar saltos de línea</span><span class="px-2.5 py-1 rounded-lg bg-[#f1f5f9] text-xs text-slate-700">Ordenar o quitar repetidas</span><span class="px-2.5 py-1 rounded-lg bg-[#f1f5f9] text-xs text-slate-700">Ver color HEX</span><span class="px-2.5 py-1 rounded-lg bg-[#f1f5f9] text-xs text-slate-700">Leer en voz alta</span><span class="px-2.5 py-1 rounded-lg bg-[#f1f5f9] text-xs text-slate-700">Guardar en Obsidian</span>
+            <span class="px-2.5 py-1 rounded-lg bg-white border border-dashed border-slate-300 text-xs text-slate-600">+ más en Ajustes</span>
+          </div>
+        </div>
+
+        <div class="fluent-card reveal-item p-6 min-w-0" data-reveal style="--stagger:100ms;">
+          <div class="flex items-center justify-between gap-3">
+            <h3 class="text-base font-semibold text-slate-900">Con inteligencia artificial</h3>
+            <span class="badge-ia px-2.5 py-0.5 rounded-full text-[11px] font-medium shrink-0">Opcional · Tu clave</span>
+          </div>
+          <p class="mt-1.5 text-[13px] text-slate-600">
+            Apagada por defecto. Bloquea contraseñas antes de enviar.
+          </p>
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            <span class="px-2.5 py-1 rounded-lg bg-[#f1f5f9] text-xs text-slate-700">Resumir en 3 puntos</span><span class="px-2.5 py-1 rounded-lg bg-[#f1f5f9] text-xs text-slate-700">Corregir ortografía</span><span class="px-2.5 py-1 rounded-lg bg-[#f1f5f9] text-xs text-slate-700">Traducir</span><span class="px-2.5 py-1 rounded-lg bg-[#f1f5f9] text-xs text-slate-700">Tono formal o cercano</span><span class="px-2.5 py-1 rounded-lg bg-[#f1f5f9] text-xs text-slate-700">Explicar en simple</span><span class="px-2.5 py-1 rounded-lg bg-[#f1f5f9] text-xs text-slate-700">Sacar tareas pendientes</span><span class="px-2.5 py-1 rounded-lg bg-[#f1f5f9] text-xs text-slate-700">Pregunta libre</span>
+            <span class="px-2.5 py-1 rounded-lg bg-white border border-dashed border-slate-300 text-xs text-slate-600">+ atajos a medida</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-5 text-center text-xs text-slate-600">
+        También incluye atajos directos para abrir una dirección en Maps o iniciar un chat en WhatsApp.
+      </p>
+    </div>
+  </section>
+
+  <section class="relative py-12 sm:py-16 overflow-hidden">
+    <div class="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[560px] h-[220px] soft-halo-breathe blur-2xl" aria-hidden="true"></div>
+    <div class="relative max-w-4xl mx-auto px-6">
+      <p id="tagline-reveal" class="text-[1.75rem] leading-[1.22] sm:text-5xl sm:leading-[1.16] font-semibold tracking-tight text-center">
+        <span class="block"><span class="reveal-word">No</span> <span class="reveal-word">cambies</span> <span class="reveal-word">de</span> <span class="reveal-word">ventana.</span></span>
+        <span class="block"><span class="reveal-word">No</span> <span class="reveal-word">copies</span> <span class="reveal-word">y</span> <span class="reveal-word">pegues.</span></span>
+        <span class="block"><span class="reveal-word">Selecciona</span> <span class="reveal-word">algo</span> <span class="reveal-word">y</span> <span class="reveal-word">resuélvelo.</span></span>
+      </p>
+    </div>
+  </section>
+
+  <section id="demo" class="py-14 sm:py-20 bg-[#f3f5f8]/45 backdrop-blur-sm border-y border-slate-200/80 scroll-mt-20">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="text-center max-w-xl mx-auto">
+        <h2 class="text-2xl sm:text-4xl font-semibold tracking-tight text-slate-900">
+          Pruébalo ahora con tu propio texto
+        </h2>
+        <p class="mt-2.5 text-sm sm:text-base text-slate-700">
+          Elige un caso o entra a «Tu texto» y pega un enlace, una fecha o una cuenta: Selbar detecta qué es y te sugiere la acción exacta.
+        </p>
+      </div>
+
+      <div id="selbar-sim" class="mt-8">
+        <div class="flex flex-wrap justify-center gap-2 mb-5">
+          <button type="button" data-scenario="utm" aria-pressed="true"
+              class="btn-press px-3.5 py-1.5 rounded-full border text-[13px] font-medium cursor-pointer bg-[#2a6573] border-[#2a6573] text-white">Enlace</button><button type="button" data-scenario="resumir" aria-pressed="false"
+              class="btn-press px-3.5 py-1.5 rounded-full border text-[13px] font-medium cursor-pointer bg-white border-slate-300 text-slate-700 hover:border-slate-400">Correo</button><button type="button" data-scenario="diff" aria-pressed="false"
+              class="btn-press px-3.5 py-1.5 rounded-full border text-[13px] font-medium cursor-pointer bg-white border-slate-300 text-slate-700 hover:border-slate-400">Ortografía</button><button type="button" data-scenario="ocr" aria-pressed="false"
+              class="btn-press px-3.5 py-1.5 rounded-full border text-[13px] font-medium cursor-pointer bg-white border-slate-300 text-slate-700 hover:border-slate-400">Foto</button><button type="button" data-scenario="fecha" aria-pressed="false"
+              class="btn-press px-3.5 py-1.5 rounded-full border text-[13px] font-medium cursor-pointer bg-white border-slate-300 text-slate-700 hover:border-slate-400">Fecha</button><button type="button" data-scenario="qr" aria-pressed="false"
+              class="btn-press px-3.5 py-1.5 rounded-full border text-[13px] font-medium cursor-pointer bg-white border-slate-300 text-slate-700 hover:border-slate-400">QR</button><button type="button" data-scenario="custom" aria-pressed="false"
+              class="btn-press px-3.5 py-1.5 rounded-full border text-[13px] font-medium cursor-pointer bg-white border-slate-300 text-slate-700 hover:border-slate-400">Tu texto</button>
+        </div>
+
+        <div class="grid lg:grid-cols-[1.15fr_1fr] gap-4">
+          <div class="selbar-window min-w-0 overflow-hidden">
+            <div class="flex items-center gap-2 px-4 py-2.5 border-b border-slate-200 bg-[#f8fafc]">
+              <span class="w-4 h-4 rounded bg-slate-200/80 text-[8px] font-bold text-slate-600 flex items-center justify-center">▸</span>
+              <span id="sim-app-title" class="text-xs text-slate-700 truncate">WhatsApp Web · Chat</span>
+              <kbd id="sim-key-pulse" class="kbd-cap ml-auto hidden sm:inline-block transition-all whitespace-nowrap">Ctrl + Shift + Espacio</kbd>
+            </div>
+
+            <div class="p-4 sm:p-5 min-h-[230px] flex flex-col justify-between">
+              <div>
+                <div id="sim-doc-area" class="text-[15px] leading-[1.8] text-slate-700 whitespace-pre-wrap break-words"></div>
+                <div id="sim-custom-wrap" class="hidden">
+                  <label for="sim-custom-input" class="block text-xs font-medium text-slate-600 mb-2">Escribe o pega cualquier texto</label>
+                  <textarea id="sim-custom-input" rows="3" maxlength="600"
+                    class="w-full rounded-xl border border-slate-300 bg-[#f8fafc] p-3 text-sm text-slate-800 outline-none focus:border-[#2a6573] resize-none"
+                    placeholder="Un enlace, una fecha, una cuenta…"></textarea>
+                </div>
+              </div>
+
+              <div id="sim-floating-bar" class="selbar-floating-bar is-visible mt-4 p-1.5 flex flex-wrap items-center gap-1.5">
+                <div id="sim-chips" class="flex flex-wrap items-center gap-1.5"></div>
+              </div>
+            </div>
+          </div>
+
+          <div id="sim-result-window" class="fluent-card min-w-0 p-0 overflow-hidden flex flex-col">
+            <div class="flex items-center gap-2 px-4 py-2.5 border-b border-slate-200 bg-[#f8fafc]">
+              <span class="text-[11px] font-medium tracking-wide uppercase text-slate-600">Resultado</span>
+              <span id="sim-result-badge" class="badge-copia ml-auto px-2 py-0.5 rounded-md text-[10px] font-medium">Local</span>
+            </div>
+            <div class="p-4 sm:p-5">
+              <h3 id="sim-result-title" class="text-sm font-semibold text-slate-900">Listo</h3>
+              <div id="sim-result-body" class="mt-3 text-sm text-slate-700"></div>
+              <div id="sim-result-meta" class="mt-3 text-[11px] text-slate-600"></div>
+              <div class="mt-4 flex gap-2">
+                <button id="sim-copy-btn" type="button" class="btn-press px-3.5 py-2 rounded-lg bg-[#2a6573] hover:bg-[#21535f] text-white text-xs font-medium cursor-pointer">Copiar</button>
+                <button id="sim-replace-btn" type="button" class="btn-press px-3.5 py-2 rounded-lg bg-white border border-slate-300 hover:border-slate-400 text-slate-700 text-xs font-medium cursor-pointer">Reemplazar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pt-10 sm:pt-12 pb-6 sm:pb-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6">
+      <div class="fluent-card p-6 sm:p-7">
+        <div class="flex flex-col lg:flex-row lg:items-center gap-6 lg:gap-8">
+          <div class="lg:w-64 shrink-0">
+            <div class="text-[11px] uppercase tracking-[0.14em] text-slate-600 font-medium">Funciona dentro de cualquier ventana</div>
+            <p class="mt-2 text-sm text-slate-700 leading-relaxed">
+              Se abre encima de donde ya estás trabajando, incluso en la compu del trabajo sin permisos de administrador.
+            </p>
+            <a href="./oficinas-y-pc-bloqueada/index.html" class="mt-2.5 inline-block text-xs font-medium text-[#2a6573] hover:underline">
+              Modo portable para oficinas →
+            </a>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 flex-1">
+            <div class="compat-chip reveal-item flex items-center gap-1.5 rounded-xl border border-slate-200 bg-[#f8fafc] px-2.5 py-2 text-[11px] text-slate-700 min-w-0" data-reveal style="--stagger:0ms;">
+                  <span class="w-5 h-5 shrink-0 rounded-md bg-white border border-slate-200 text-[9px] font-semibold text-slate-600 flex items-center justify-center">W</span>
+                  <span class="truncate">Word</span>
+                </div><div class="compat-chip reveal-item flex items-center gap-1.5 rounded-xl border border-slate-200 bg-[#f8fafc] px-2.5 py-2 text-[11px] text-slate-700 min-w-0" data-reveal style="--stagger:35ms;">
+                  <span class="w-5 h-5 shrink-0 rounded-md bg-white border border-slate-200 text-[9px] font-semibold text-slate-600 flex items-center justify-center">X</span>
+                  <span class="truncate">Excel</span>
+                </div><div class="compat-chip reveal-item flex items-center gap-1.5 rounded-xl border border-slate-200 bg-[#f8fafc] px-2.5 py-2 text-[11px] text-slate-700 min-w-0" data-reveal style="--stagger:70ms;">
+                  <span class="w-5 h-5 shrink-0 rounded-md bg-white border border-slate-200 text-[9px] font-semibold text-slate-600 flex items-center justify-center">O</span>
+                  <span class="truncate">Outlook</span>
+                </div><div class="compat-chip reveal-item flex items-center gap-1.5 rounded-xl border border-slate-200 bg-[#f8fafc] px-2.5 py-2 text-[11px] text-slate-700 min-w-0" data-reveal style="--stagger:105ms;">
+                  <span class="w-5 h-5 shrink-0 rounded-md bg-white border border-slate-200 text-[9px] font-semibold text-slate-600 flex items-center justify-center">W</span>
+                  <span class="truncate">WhatsApp</span>
+                </div><div class="compat-chip reveal-item flex items-center gap-1.5 rounded-xl border border-slate-200 bg-[#f8fafc] px-2.5 py-2 text-[11px] text-slate-700 min-w-0" data-reveal style="--stagger:140ms;">
+                  <span class="w-5 h-5 shrink-0 rounded-md bg-white border border-slate-200 text-[9px] font-semibold text-slate-600 flex items-center justify-center">C</span>
+                  <span class="truncate">Chrome</span>
+                </div><div class="compat-chip reveal-item flex items-center gap-1.5 rounded-xl border border-slate-200 bg-[#f8fafc] px-2.5 py-2 text-[11px] text-slate-700 min-w-0" data-reveal style="--stagger:175ms;">
+                  <span class="w-5 h-5 shrink-0 rounded-md bg-white border border-slate-200 text-[9px] font-semibold text-slate-600 flex items-center justify-center">P</span>
+                  <span class="truncate">PDF</span>
+                </div><div class="compat-chip reveal-item flex items-center gap-1.5 rounded-xl border border-slate-200 bg-[#f8fafc] px-2.5 py-2 text-[11px] text-slate-700 min-w-0" data-reveal style="--stagger:210ms;">
+                  <span class="w-5 h-5 shrink-0 rounded-md bg-white border border-slate-200 text-[9px] font-semibold text-slate-600 flex items-center justify-center">N</span>
+                  <span class="truncate">Notas</span>
+                </div><div class="compat-chip reveal-item flex items-center gap-1.5 rounded-xl border border-slate-200 bg-[#f8fafc] px-2.5 py-2 text-[11px] text-slate-700 min-w-0" data-reveal style="--stagger:245ms;">
+                  <span class="w-5 h-5 shrink-0 rounded-md bg-white border border-slate-200 text-[9px] font-semibold text-slate-600 flex items-center justify-center">T</span>
+                  <span class="truncate">Teams</span>
+                </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="descarga" class="relative overflow-hidden pt-10 pb-16 sm:pt-12 sm:pb-20 scroll-mt-24 sm:scroll-mt-28">
+    <div class="relative max-w-5xl mx-auto px-4 sm:px-6 text-center max-w-2xl mx-auto">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-slate-300 text-xs text-slate-700 mb-4">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#2a6573]"></span>
+        100% gratis · Código abierto
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-semibold tracking-tight text-slate-900">
+        Pruébalo en dos minutos
+      </h2>
+      <p class="mt-3 text-slate-700">
+        Un solo archivo portable para Windows 10 y 11. Lo abres y queda listo en la bandeja del sistema, sin instaladores ni planes de pago.
+      </p>
+
+      <div class="mt-7 flex flex-col sm:flex-row justify-center gap-3">
+        <a href="https://github.com/alarconcesar/selbar/releases/download/v0.13.6/Selbar-0.13.6-win-x64.zip" class="btn-press inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#2a6573] hover:bg-[#21535f] text-white text-sm font-medium">
+          <svg class="w-4 h-4 shrink-0" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"><path d="M128 32v136"/><polyline points="72 112 128 168 184 112"/><path d="M40 168v32a16 16 0 0 0 16 16h144a16 16 0 0 0 16-16v-32"/></svg>
+          <span>PC normal (x64) · 68 MB</span>
+        </a>
+        <a href="https://github.com/alarconcesar/selbar/releases/download/v0.13.6/Selbar-0.13.6-win-arm64.zip" class="btn-press inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-white border border-[#2a6573] text-[#2a6573] text-sm font-medium">
+          <svg class="w-4 h-4 shrink-0" viewBox="0 0 256 256" fill="none" stroke="currentColor" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"><path d="M128 32v136"/><polyline points="72 112 128 168 184 112"/><path d="M40 168v32a16 16 0 0 0 16 16h144a16 16 0 0 0 16-16v-32"/></svg>
+          <span>Snapdragon (ARM64) · 64 MB</span>
+        </a>
+      </div>
+
+      <details class="mt-5 inline-block text-left">
+        <summary class="cursor-pointer text-xs text-slate-600 hover:text-slate-700 list-none text-center">
+          Detalles técnicos (x64 / ARM64) ▾
+        </summary>
+        <div class="details-panel mt-3 rounded-xl bg-white border border-slate-200 p-4 max-w-md mx-auto space-y-2.5 text-left">
+          <div class="flex gap-2">
+            <button type="button" data-dl-select="x64" class="btn-press px-3 py-1 rounded-lg border border-[#2a6573] bg-white text-xs text-slate-800 cursor-pointer">PC normal (x64)</button>
+            <button type="button" data-dl-select="arm64" class="btn-press px-3 py-1 rounded-lg border border-[#cbd5e1] bg-white text-xs text-slate-700 cursor-pointer">Snapdragon (ARM64)</button>
+          </div>
+          <div id="dl-panel-title" class="text-xs font-medium text-slate-800">PC normal (Intel o AMD) · 68 MB</div>
+          <div class="text-[10px] text-slate-600 break-all">SHA-256: <span id="dl-panel-sha">b2531c5424b254fd532692f9492d8263c29baac4e05b478f883d4a0dbc7f473a</span></div>
+        </div>
+      </details>
+
+      <div class="mt-10 pt-8 border-t border-slate-300/80 grid sm:grid-cols-2 gap-x-8 gap-y-5 text-left text-xs text-slate-700">
+        <div class="reveal-item" data-reveal style="--stagger:0ms;">
+          <div class="font-medium text-slate-900">¿Tiene algún costo o plan de pago?</div>
+          <p class="mt-1 leading-relaxed">No. Es gratis, código abierto y trae las 57 acciones desbloqueadas sin crear cuenta.</p>
+        </div>
+        <div class="reveal-item" data-reveal style="--stagger:50ms;">
+          <div class="font-medium text-slate-900">¿Necesita internet para funcionar?</div>
+          <p class="mt-1 leading-relaxed">No para lo esencial: limpiar enlaces, sacar texto de imágenes, QR, cuentas y fechas corren directo en tu PC.</p>
+        </div>
+        <div class="reveal-item" data-reveal style="--stagger:100ms;">
+          <div class="font-medium text-slate-900">¿Cómo funciona la inteligencia artificial?</div>
+          <p class="mt-1 leading-relaxed">Viene apagada por defecto. Si quieres resumir o traducir, conectas tu propia clave gratuita o de pago.</p>
+        </div>
+        <div class="reveal-item" data-reveal style="--stagger:150ms;">
+          <div class="font-medium text-slate-900">¿Sirve en la computadora del trabajo?</div>
+          <p class="mt-1 leading-relaxed">Sí. Es portable: lo guardas en una carpeta o USB y se abre sin pedir clave de administrador.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="relative z-10 border-t border-slate-200/80 bg-[#f3f5f8]/70 backdrop-blur-sm overflow-hidden">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
+        <div class="lg:col-span-2 space-y-4">
+          <a href="./" class="inline-flex items-center">
+            <img src="./assets/selbar-logo.svg" alt="Selbar" width="203" height="64" class="h-9 w-auto" />
+          </a>
+          <p class="text-sm text-slate-700 max-w-sm leading-relaxed">
+            Selecciona. Pulsa. Listo. Tu barra de ayuda diaria sobre el texto que marcas. Gratis, código abierto y pensada en español.
+          </p>
+          <div class="text-xs text-slate-600">
+            Hecha en Lima · Open source
+          </div>
+        </div>
+
+        <div class="space-y-3 text-sm">
+          <div class="font-medium text-slate-900">Producto</div>
+          <ul class="space-y-2 text-slate-700">
+            <li><a href="./index.html#funciones" class="hover:text-slate-900 transition-colors">Qué puede hacer</a></li>
+            <li><a href="./oficinas-y-pc-bloqueada/index.html" class="hover:text-slate-900 transition-colors">Oficinas y PC bloqueada</a></li>
+            <li><a href="./comparativa/index.html" class="hover:text-slate-900 transition-colors">Comparativa</a></li>
+            <li><a href="./index.html#descarga" class="hover:text-slate-900 transition-colors">Descargar gratis</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3 text-sm">
+          <div class="font-medium text-slate-900">Herramientas online</div>
+          <ul class="space-y-2 text-slate-700">
+            <li><a href="./quitar-utm-de-un-enlace/index.html" class="hover:text-slate-900 transition-colors">Limpiar enlace largo</a></li>
+            <li><a href="./extraer-texto-de-una-imagen/index.html" class="hover:text-slate-900 transition-colors">Sacar texto de imagen</a></li>
+            <li><a href="./leer-codigo-qr-en-la-pc/index.html" class="hover:text-slate-900 transition-colors">Crear código QR</a></li>
+            <li><a href="./saber-que-dia-cae-una-fecha/index.html" class="hover:text-slate-900 transition-colors">Qué día cae una fecha</a></li>
+            <li><a href="./convertir-unidades-al-instante/index.html" class="hover:text-slate-900 transition-colors">Calculadora y medidas</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3 text-sm">
+          <div class="font-medium text-slate-900">Confianza</div>
+          <ul class="space-y-2 text-slate-700">
+            <li><a href="./privacidad/index.html" class="hover:text-slate-900 transition-colors">Privacidad y datos</a></li>
+            <li><a href="./terminos/index.html" class="hover:text-slate-900 transition-colors">Términos de uso</a></li>
+            <li><a href="./problemas-conocidos/index.html" class="hover:text-slate-900 transition-colors">Ayuda y compatibilidad</a></li>
+            <li><a href="https://github.com/alarconcesar/selbar/issues" class="hover:text-slate-900 transition-colors">Reportar en GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="reveal-item mt-8 sm:mt-12 select-none" data-reveal aria-hidden="true">
+        <div class="footer-wordmark">Selbar</div>
+        <div class="mx-auto mt-3 h-1 w-14 rounded-full bg-[#a9d7de]"></div>
+      </div>
+
+      <div class="mt-8 pt-6 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600">
+        <span>© 2026 Selbar · Gratis y código abierto.</span>
+        <span>Compatible con Windows 10 y Windows 11</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

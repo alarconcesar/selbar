@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="sb-bg" x1="6" y1="4" x2="58" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#286473"/>
+      <stop offset="100%" stop-color="#12353F"/>
+    </linearGradient>
+    <linearGradient id="sb-cyan" x1="12" y1="27" x2="52" y2="53" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#94EFFA"/>
+      <stop offset="100%" stop-color="#4FD0E1"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="60" height="60" rx="15" fill="url(#sb-bg)"/>
+  <rect x="2.75" y="2.75" width="58.5" height="58.5" rx="14.25" stroke="#7CE5F2" stroke-opacity="0.35" stroke-width="1.5"/>
+  <path d="M 25.0 11.6 H 46.2 A 4.8 4.8 0 0 1 46.2 21.2 H 25.0 A 3.0 3.0 0 0 0 25.0 27.2 H 31.8 Q 33.0 27.2 32.6 28.3 L 29.9 35.7 Q 29.5 36.8 28.3 36.8 H 25.0 A 12.6 12.6 0 0 1 25.0 11.6 Z" fill="#FFFFFF"/>
+  <path d="M 39.0 52.4 H 17.2 A 4.8 4.8 0 0 1 17.2 42.8 H 39.0 A 3.0 3.0 0 0 0 39.0 36.8 H 32.2 Q 31.0 36.8 31.4 35.7 L 34.1 28.3 Q 34.5 27.2 35.7 27.2 H 39.0 A 12.6 12.6 0 0 1 39.0 52.4 Z" fill="url(#sb-cyan)"/>
+</svg>

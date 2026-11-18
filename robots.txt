@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://alarconcesar.github.io/selbar/sitemap.xml

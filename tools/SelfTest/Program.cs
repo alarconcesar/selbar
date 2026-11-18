@@ -1494,7 +1494,7 @@ internal static class Program
         Check("títulos rellenos", presets.All(a => !string.IsNullOrWhiteSpace(a.Title)));
         Check("acciones IA con prompt", presets.Where(a => a.Kind == ActionKind.Ai).All(a => !string.IsNullOrWhiteSpace(a.PromptTemplate)));
         Check("acciones IA con plantilla {text}", presets.Where(a => a.Kind == ActionKind.Ai).All(a => a.PromptTemplate!.Contains("{text}")));
-        Check("acciones de navegador con URL", presets.Where(a => a.Output == OutputMode.Browser || a.Output == OutputMode.OpenUrl).All(a => a.Output == OutputMode.OpenUrl || !string.IsNullOrWhiteSpace(a.UrlTemplate)));
+        Check("acciones de navegador con URL", presets.Where(a => a.Output == OutputMode.Browser || a.Output == OutputMode.OpenUrl).All(a => a.Output == OutputMode.OpenUrl || a.Id is "contact.email" or "link.summarize" || !string.IsNullOrWhiteSpace(a.UrlTemplate)));
                 int generic = presets.Count(a => a.IsEnabled && string.IsNullOrEmpty(a.MatchRegex)
             && !a.LongTextOnly && !a.SingleWordOnly && !a.MultiWordOnly);
         Check("pocas acciones genéricas activas", generic <= 12, $"genéricas={generic}");

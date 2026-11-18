@@ -1,0 +1,123 @@
+<ui:FluentWindow x:Class="Selbar.Ui.ActionEditDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="clr-namespace:Selbar.Ui"
+        Title="Selbar · Acción personalizada" TitleBarTitle="Selbar · Acción personalizada" IsDialog="True"
+        Height="560" Width="620" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+    <Grid Background="{DynamicResource BgWindow}" Margin="24,16,24,18">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Cabecera -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+            <Border Width="36" Height="36" CornerRadius="8" Background="{DynamicResource AccentSoft}"
+                    BorderBrush="{DynamicResource AccentBorder}" BorderThickness="1">
+                <TextBlock Text="&#xE70F;" FontFamily="{StaticResource IconFont}" FontSize="16"
+                           Foreground="{DynamicResource AccentText}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <StackPanel Margin="12,0,0,0" VerticalAlignment="Center">
+                <TextBlock x:Name="HeaderTitle" Text="Nueva acción" FontSize="15" FontWeight="SemiBold"/>
+                <TextBlock Text="Aparecerá en la barra cuando selecciones texto. No se ejecuta al guardar."
+                           Style="{StaticResource HintText}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!-- Formulario desplazable -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="0,0,6,0">
+            <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="14"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Style="{StaticResource SectionText}" Text="Título en el menú"/>
+                        <TextBox x:Name="TitleBox" MaxLength="40" Margin="0,6,0,0"
+                                 AutomationProperties.Name="Título de la acción"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Style="{StaticResource SectionText}" Text="Qué hace"/>
+                        <ComboBox x:Name="TypeBox" Margin="0,6,0,0" SelectionChanged="OnTypeChanged"
+                                  AutomationProperties.Name="Tipo de acción">
+                            <ComboBoxItem Tag="Ai">Prompt de IA</ComboBoxItem>
+                            <ComboBoxItem Tag="Url">Abrir enlace</ComboBoxItem>
+                            <ComboBoxItem Tag="Command">Comando local</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Margin="0,16,0,6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="PromptLabel" Grid.Column="0" Style="{StaticResource SectionText}"
+                               Text="Prompt para la IA" VerticalAlignment="Center"/>
+                    <Button x:Name="InsertTextBtn" Grid.Column="1" Content="Insertar {text}"
+                            Style="{StaticResource SubtleButton}" Click="OnInsertText"
+                            Padding="10,4" MinHeight="28"
+                            AutomationProperties.Name="Insertar la selección en el texto"
+                            ToolTip="Inserta {text} donde esté el cursor"/>
+                </Grid>
+                <TextBox x:Name="PromptBox" Height="170" AcceptsReturn="True"
+                         TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                         SpellCheck.IsEnabled="True" Language="es-ES"
+                         AutomationProperties.Name="Contenido de la acción"/>
+                <TextBlock x:Name="PromptHint" Style="{StaticResource HintText}" Margin="0,6,0,0" TextWrapping="Wrap"/>
+
+                <Button x:Name="VariablesToggle" Style="{StaticResource SubtleButton}"
+                        HorizontalAlignment="Left" Margin="0,8,0,0" Click="OnToggleVariables"
+                        AutomationProperties.Name="Mostrar variables disponibles">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock x:Name="VariablesChevron" Text="&#xE70D;" FontFamily="{StaticResource IconFont}"
+                                   FontSize="10" VerticalAlignment="Center" Margin="0,0,8,0"
+                                   Foreground="{DynamicResource TextSecondary}"/>
+                        <TextBlock Text="Más variables" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                <TextBlock x:Name="VariablesText" Style="{StaticResource HintText}" Margin="4,6,0,0"
+                           TextWrapping="Wrap" Visibility="Collapsed"/>
+
+                <TextBlock x:Name="WarningText" Style="{StaticResource HintText}" Margin="0,10,0,0"
+                           TextWrapping="Wrap" Visibility="Collapsed"
+                           Text="El comando se ejecuta en tu equipo con tus permisos. La selección se inserta literalmente en cmd.exe: usa solo comandos y texto de confianza."/>
+
+                <StackPanel x:Name="OutputSection" Margin="0,16,0,0">
+                    <TextBlock Style="{StaticResource SectionText}" Text="Al ejecutar"/>
+                    <ComboBox x:Name="OutputBox" Margin="0,6,0,0" AutomationProperties.Name="Resultado de la acción">
+                        <ComboBoxItem Tag="Popup">Mostrar el resultado en una ventana</ComboBoxItem>
+                        <ComboBoxItem Tag="Copy">Copiar el resultado al portapapeles</ComboBoxItem>
+                        <ComboBoxItem Tag="Replace">Reemplazar la selección con el resultado</ComboBoxItem>
+                    </ComboBox>
+                </StackPanel>
+                <TextBlock x:Name="OutputSummaryText" Style="{StaticResource HintText}" Margin="0,16,0,0"
+                           TextWrapping="Wrap" Visibility="Collapsed"/>
+
+                <CheckBox x:Name="EnabledBox" Style="{StaticResource SwitchToggle}" Margin="0,16,0,0"
+                          Content="Activada (aparece en la barra)"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Pie fijo -->
+        <Grid Grid.Row="2" Margin="0,14,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="ErrorText" Grid.Column="0" FontSize="12" Foreground="{DynamicResource Danger}"
+                       TextWrapping="Wrap" VerticalAlignment="Center" Margin="0,0,16,0"
+                       Visibility="Collapsed"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Content="Cancelar" Style="{StaticResource SubtleButton}" Width="100"
+                        Click="OnCancel" Margin="0,0,8,0"/>
+                <Button x:Name="SaveButton" Content="Crear acción" Style="{StaticResource AccentButton}" Width="130"
+                        IsDefault="True" Click="OnSave"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

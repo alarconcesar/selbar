@@ -1,0 +1,18 @@
+<Window x:Class="Selbar.Ui.ActionBarWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Selbar" SizeToContent="WidthAndHeight"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        Topmost="True" ShowInTaskbar="False" ResizeMode="NoResize" ShowActivated="False"
+        FontFamily="{StaticResource FontText}" FontSize="14"
+        Foreground="{DynamicResource TextPrimary}"
+        UseLayoutRounding="True" SnapsToDevicePixels="True">
+    <Border x:Name="Pill" CornerRadius="{StaticResource RadiusM}" Padding="4"
+            BorderThickness="1" RenderTransformOrigin="0.5,1"
+            Background="{DynamicResource BgFlyout}" BorderBrush="{DynamicResource Stroke}">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="24" ShadowDepth="6" Direction="270" Opacity="0.4" Color="Black"/>
+        </Border.Effect>
+        <StackPanel x:Name="Bar" Orientation="Horizontal"/>
+    </Border>
+</Window>

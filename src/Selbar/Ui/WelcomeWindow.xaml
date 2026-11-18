@@ -1,0 +1,129 @@
+<ui:FluentWindow x:Class="Selbar.Ui.WelcomeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="clr-namespace:Selbar.Ui"
+        Title="Bienvenido a Selbar" TitleBarTitle="Selbar" IsDialog="True"
+        Height="520" Width="640" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid Background="{DynamicResource BgWindow}" Margin="32,16,32,20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Cabecera -->
+        <StackPanel Grid.Row="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Image x:Name="HeroIcon" Grid.Column="0" Width="48" Height="48"
+                       RenderOptions.BitmapScalingMode="HighQuality" VerticalAlignment="Center"/>
+                <StackPanel Grid.Column="1" Margin="16,0,0,0" VerticalAlignment="Center">
+                    <TextBlock Text="Bienvenido a Selbar" Style="{StaticResource TitleText}"
+                               TextWrapping="Wrap"/>
+                    <TextBlock Text="Acciones con IA y utilidades sobre el texto que seleccionas, cuando lo pides."
+                               Style="{StaticResource PageSubtitle}" TextWrapping="Wrap"/>
+                </StackPanel>
+            </Grid>
+            <Border Style="{StaticResource Divider}" Margin="0,16,0,4"/>
+        </StackPanel>
+
+        <!-- Tres pasos, con ancho finito para que el texto envuelva de verdad -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="0,4,0,0">
+            <StackPanel>
+                <Border Style="{StaticResource CardRow}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Width="36" Height="36" CornerRadius="8"
+                                Background="{DynamicResource AccentSoft}"
+                                BorderBrush="{DynamicResource AccentBorder}" BorderThickness="1"
+                                VerticalAlignment="Top">
+                            <TextBlock Text="&#xE8B0;" FontFamily="{StaticResource IconFont}" FontSize="16"
+                                       Foreground="{DynamicResource AccentText}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0">
+                            <TextBlock Text="1 · Selecciona texto" FontSize="14" FontWeight="SemiBold"/>
+                            <TextBlock Text="Arrastra con el ratón o usa Shift + flechas. Selbar no lee nada hasta que la llamas y nunca captura tus pulsaciones."
+                                       Style="{StaticResource HintText}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource CardRow}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Width="36" Height="36" CornerRadius="8"
+                                Background="{DynamicResource BgBadge}"
+                                BorderBrush="{DynamicResource StrokeSubtle}" BorderThickness="1"
+                                VerticalAlignment="Top">
+                            <TextBlock Text="&#xE765;" FontFamily="{StaticResource IconFont}" FontSize="16"
+                                       Foreground="{DynamicResource TextSecondary}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0">
+                            <TextBlock x:Name="HotkeyText" Text="2 · Abre la barra" FontSize="14" FontWeight="SemiBold"
+                                       TextWrapping="Wrap"/>
+                            <TextBlock x:Name="HotkeyHintText"
+                                       Text="Pasa el ratón por el indicador o haz clic en él. El atajo abre la barra completa."
+                                       Style="{StaticResource HintText}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource CardRow}" BorderThickness="0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Column="0" Width="36" Height="36" CornerRadius="8"
+                                Background="{DynamicResource BgBadge}"
+                                BorderBrush="{DynamicResource StrokeSubtle}" BorderThickness="1"
+                                VerticalAlignment="Top">
+                            <TextBlock Text="&#xE82F;" FontFamily="{StaticResource IconFont}" FontSize="16"
+                                       Foreground="{DynamicResource TextSecondary}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel Grid.Column="1" Margin="14,0,0,0">
+                            <TextBlock Text="3 · Elige una acción" FontSize="14" FontWeight="SemiBold"/>
+                            <TextBlock Text="Traducir, resumir, corregir, copiar, buscar o abrir un enlace. La IA es opcional: las utilidades locales funcionan sin configurarla."
+                                       Style="{StaticResource HintText}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Background="{DynamicResource BgLayer}" BorderBrush="{DynamicResource StrokeSubtle}"
+                        BorderThickness="1" CornerRadius="{StaticResource RadiusM}" Padding="14,12" Margin="0,12,0,0">
+                    <TextBlock Style="{StaticResource HintText}" TextWrapping="Wrap"
+                               Text="Puedes seguir escribiendo: escribir no se intercepta. Selbar se queda en la bandeja y puedes cambiarlo todo después en Ajustes."/>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Pie: una acción principal y la configuración de IA como secundaria -->
+        <Grid Grid.Row="2" Margin="0,16,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Empezar deja Selbar activo en la bandeja."
+                       Style="{StaticResource CaptionText}" VerticalAlignment="Center"
+                       TextWrapping="Wrap" Margin="0,0,16,0"/>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Content="Configurar IA" Style="{StaticResource SubtleButton}" Width="130"
+                        Click="OnConfigureAi" ToolTip="Abre Ajustes en Inteligencia artificial"/>
+                <Button Content="Empezar" Style="{StaticResource AccentButton}" Width="130"
+                        Margin="8,0,0,0" Click="OnStart" IsDefault="True"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

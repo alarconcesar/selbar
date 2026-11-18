@@ -1,0 +1,817 @@
+<ui:FluentWindow x:Class="Selbar.Ui.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="clr-namespace:Selbar.Ui"
+        Title="Selbar · Configuración"
+        TitleBarTitle="Selbar" Height="740" Width="1020"
+        MinHeight="600" MinWidth="860" WindowStartupLocation="CenterScreen">
+    <Grid Background="{DynamicResource BgWindow}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="224"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- ===================== Barra lateral ===================== -->
+        <Border Grid.Column="0" Background="{DynamicResource BgLayer}"
+                BorderBrush="{DynamicResource StrokeSubtle}" BorderThickness="0,0,1,0">
+            <DockPanel Margin="16,20,16,16">
+                <!-- Marca -->
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="4,0,0,24">
+                    <Image x:Name="BrandIcon" Width="32" Height="32"
+                           RenderOptions.BitmapScalingMode="HighQuality" VerticalAlignment="Center"/>
+                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="Selbar" FontFamily="{StaticResource FontDisplay}"
+                                   FontSize="14" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="VersionText" FontSize="12"
+                                   Foreground="{DynamicResource TextTertiary}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <TextBlock DockPanel.Dock="Bottom" Text="Los cambios se aplican al guardar."
+                           Style="{StaticResource CaptionText}" TextWrapping="Wrap" Margin="4,12,4,0"/>
+
+                <!-- Navegación -->
+                <ListBox x:Name="NavList" SelectionChanged="OnNavChanged" Background="Transparent"
+                         PreviewMouseLeftButtonDown="OnNavPointer" PreviewKeyDown="OnNavKey"
+                         AutomationProperties.Name="Secciones de Ajustes">
+                    <ListBoxItem Style="{StaticResource NavItem}" Tag="0">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE8FD;" FontFamily="{StaticResource IconFont}" FontSize="16"
+                                       Width="28" VerticalAlignment="Center"/>
+                            <TextBlock Text="Acciones" FontSize="14" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Style="{StaticResource NavItem}" Tag="1">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE82F;" FontFamily="{StaticResource IconFont}" FontSize="16"
+                                       Width="28" VerticalAlignment="Center"/>
+                            <TextBlock Text="Inteligencia artificial" FontSize="14" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Style="{StaticResource NavItem}" Tag="2">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE765;" FontFamily="{StaticResource IconFont}" FontSize="16"
+                                       Width="28" VerticalAlignment="Center"/>
+                            <TextBlock Text="Selección y atajos" FontSize="14" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Style="{StaticResource NavItem}" Tag="3">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE790;" FontFamily="{StaticResource IconFont}" FontSize="16"
+                                       Width="28" VerticalAlignment="Center"/>
+                            <TextBlock Text="Apariencia" FontSize="14" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                    <ListBoxItem Style="{StaticResource NavItem}" Tag="4">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="&#xE713;" FontFamily="{StaticResource IconFont}" FontSize="16"
+                                       Width="28" VerticalAlignment="Center"/>
+                            <TextBlock Text="Datos e integraciones" FontSize="14" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </ListBoxItem>
+                </ListBox>
+            </DockPanel>
+        </Border>
+
+        <!-- ===================== Contenido + pie ===================== -->
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <ScrollViewer x:Name="ContentScroll" Grid.Row="0" VerticalScrollBarVisibility="Auto" Padding="0,0,6,0">
+                <Grid Margin="28,24,32,24" MaxWidth="920" HorizontalAlignment="Left">
+
+                    <!-- ===== ACCIONES ===== -->
+                    <StackPanel x:Name="PanelAcciones">
+                        <TextBlock Style="{StaticResource PageTitle}" Text="Acciones"/>
+                        <TextBlock Style="{StaticResource PageSubtitle}" TextWrapping="Wrap"
+                                   Text="Elige qué aparece al seleccionar texto. Puedes activar u ocultar cualquier acción; las personalizadas además se editan, eliminan y ordenan."/>
+
+                        <Grid Margin="0,18,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <TextBox x:Name="FilterBox" TextChanged="OnFilterChanged" Padding="32,6,10,6"
+                                         AutomationProperties.Name="Buscar acciones"
+                                         ToolTip="Filtrar por nombre, categoría o descripción"/>
+                                <TextBlock Text="&#xE721;" FontFamily="{StaticResource IconFont}" FontSize="15"
+                                           Foreground="{DynamicResource TextTertiary}" Margin="11,0,0,0"
+                                           VerticalAlignment="Center" IsHitTestVisible="False"/>
+                                <TextBlock Text="Buscar acción…" Foreground="{DynamicResource TextTertiary}"
+                                           Margin="33,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"
+                                           Visibility="{Binding Text, ElementName=FilterBox, Converter={StaticResource EmptyToVisible}}"/>
+                            </Grid>
+                            <Button x:Name="AddBtn" Grid.Column="1" Content="+ Añadir" Margin="10,0,0,0"
+                                    Click="OnAddMenu" ToolTip="Añadir una acción al borrador">
+                                <Button.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem Header="Desde la biblioteca…" Click="OnOpenLibrary"/>
+                                        <MenuItem Header="Crear una acción propia…" Click="OnAdd"/>
+                                    </ContextMenu>
+                                </Button.ContextMenu>
+                            </Button>
+                            <Button x:Name="MoreBtn" Grid.Column="2" Content="Más" Margin="6,0,0,0"
+                                    Style="{StaticResource SubtleButton}"
+                                    Click="OnMoreMenu" ToolTip="Editar, ordenar o restablecer">
+                                <Button.ContextMenu>
+                                    <ContextMenu>
+                                        <MenuItem x:Name="EditMenuItem" Header="Editar" Click="OnEdit"/>
+                                        <MenuItem x:Name="DeleteMenuItem" Header="Eliminar" Click="OnDelete"/>
+                                        <Separator/>
+                                        <MenuItem x:Name="MoveUpItem" Header="Subir" Click="OnMoveUp"/>
+                                        <MenuItem x:Name="MoveDownItem" Header="Bajar" Click="OnMoveDown"/>
+                                        <Separator/>
+                                        <MenuItem Header="Restablecer solo acciones…" Click="OnReset"/>
+                                    </ContextMenu>
+                                </Button.ContextMenu>
+                            </Button>
+                        </Grid>
+
+                        <Grid Margin="2,0,2,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="ActiveCountText" Grid.Column="0" Style="{StaticResource CaptionText}"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock x:Name="ActionHintText" Grid.Column="1" Style="{StaticResource CaptionText}"
+                                       VerticalAlignment="Center" Margin="12,0,12,0" TextWrapping="Wrap"
+                                       MaxWidth="280" TextAlignment="Right"/>
+                            <CheckBox x:Name="ActiveOnly" Grid.Column="2" Content="Solo activas"
+                                      Style="{StaticResource SwitchToggle}" VerticalAlignment="Center"
+                                      Checked="OnFilterToggle" Unchecked="OnFilterToggle"/>
+                        </Grid>
+
+                        <Border Background="{DynamicResource BgCard}" BorderBrush="{DynamicResource StrokeSubtle}"
+                                BorderThickness="1" CornerRadius="{StaticResource RadiusM}" Padding="4">
+                            <Grid>
+                                <ListBox x:Name="ActionList" SelectionMode="Single" MaxHeight="380"
+                                         SelectionChanged="OnActionSelectionChanged"
+                                         PreviewMouseRightButtonDown="OnActionListRightClick"
+                                         ScrollViewer.VerticalScrollBarVisibility="Auto">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="{DynamicResource StrokeSubtle}" BorderThickness="0,0,0,1"
+                                                    Padding="10,9" ContextMenuOpening="OnActionContextOpening">
+                                                <Border.ContextMenu>
+                                                    <ContextMenu>
+                                                        <MenuItem Header="Editar" Tag="{Binding}" Click="OnEdit"/>
+                                                        <MenuItem Header="Eliminar" Tag="{Binding}" Click="OnDelete"/>
+                                                        <Separator/>
+                                                        <MenuItem Header="Subir" Tag="{Binding}" Click="OnMoveUp"/>
+                                                        <MenuItem Header="Bajar" Tag="{Binding}" Click="OnMoveDown"/>
+                                                    </ContextMenu>
+                                                </Border.ContextMenu>
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <Border Grid.Column="0" Width="32" Height="32" CornerRadius="{StaticResource RadiusM}"
+                                                            Background="{DynamicResource BgBadge}" BorderBrush="{DynamicResource StrokeSubtle}"
+                                                            BorderThickness="1">
+                                                        <Grid>
+                                                            <TextBlock Text="{Binding IconGlyph}" FontFamily="{StaticResource IconFont}"
+                                                                       FontSize="15" Foreground="{DynamicResource TextSecondary}"
+                                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                       Visibility="{Binding HasIcon, Converter={StaticResource BoolVisibility}}"/>
+                                                            <TextBlock Text="{Binding Initial}" FontSize="13" FontWeight="SemiBold"
+                                                                       Foreground="{DynamicResource AccentText}"
+                                                                       HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                                       Visibility="{Binding HasIcon, Converter={StaticResource BoolVisibility}, ConverterParameter=inverse}"/>
+                                                        </Grid>
+                                                    </Border>
+
+                                                    <StackPanel Grid.Column="1" Margin="12,0,12,0" VerticalAlignment="Center">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Grid.Column="0" Text="{Binding Title}" FontSize="13"
+                                                                       FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
+                                                                       ToolTip="{Binding Title}"/>
+                                                            <Border Background="{DynamicResource AccentSoft}" CornerRadius="{StaticResource RadiusS}"
+                                                                    Padding="6,2" Margin="8,0,0,0" VerticalAlignment="Center"
+                                                                    Grid.Column="1"
+                                                                    Visibility="{Binding IsAi, Converter={StaticResource BoolVisibility}}">
+                                                                <TextBlock Text="IA" FontSize="10.5" FontWeight="SemiBold"
+                                                                           Foreground="{DynamicResource AccentText}"/>
+                                                            </Border>
+                                                        </Grid>
+                                                        <TextBlock Text="{Binding Description}" FontSize="12"
+                                                                   Foreground="{DynamicResource TextTertiary}"
+                                                                   TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
+                                                    </StackPanel>
+
+                                                    <Border Grid.Column="2" Style="{StaticResource Badge}" Margin="0,0,14,0"
+                                                            Background="{Binding Output, Converter={StaticResource OutputBadgeBrush}, ConverterParameter=bg}">
+                                                        <TextBlock Text="{Binding OutputBadge}" Style="{StaticResource BadgeText}"
+                                                                   Foreground="{Binding Output, Converter={StaticResource OutputBadgeBrush}}"/>
+                                                    </Border>
+
+                                                    <CheckBox Grid.Column="3" Style="{StaticResource SwitchToggle}"
+                                                              IsChecked="{Binding IsEnabled, Mode=OneWay}" VerticalAlignment="Center"
+                                                              Checked="OnActionToggle" Unchecked="OnActionToggle"
+                                                              AutomationProperties.Name="{Binding DisplayTitle}"
+                                                              ToolTip="Mostrar en la barra"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <TextBlock x:Name="EmptyActions" Text="No hay acciones que coincidan con el filtro."
+                                           Foreground="{DynamicResource TextTertiary}" FontSize="12.5"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           IsHitTestVisible="False" Visibility="Collapsed"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- ===== IA ===== -->
+                    <StackPanel x:Name="PanelIA" Visibility="Collapsed">
+                        <TextBlock Style="{StaticResource PageTitle}" Text="Inteligencia artificial"/>
+                        <TextBlock Style="{StaticResource PageSubtitle}" TextWrapping="Wrap"
+                                   Text="Conecta un endpoint compatible con la API de OpenAI. El texto seleccionado solo se envía al proveedor que configures."/>
+
+                        <Border Style="{StaticResource Card}" Margin="0,18,0,0">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="Conexión"/>
+                                <Grid Margin="0,14,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="14"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Style="{StaticResource SectionText}" Text="Proveedor"/>
+                                        <ComboBox x:Name="ProviderBox" SelectionChanged="OnProviderChanged"
+                                                  AutomationProperties.Name="Proveedor de IA"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Style="{StaticResource SectionText}" Text="Modelo"/>
+                                        <DockPanel>
+                                            <Button x:Name="ModelsRefreshBtn" DockPanel.Dock="Right" Width="34"
+                                                    Margin="6,0,0,0" Padding="0" Click="OnModelsRefresh"
+                                                    ToolTip="Recargar lista de modelos"
+                                                    AutomationProperties.Name="Recargar modelos">
+                                                <TextBlock Text="&#xE72C;" FontFamily="{StaticResource IconFont}"
+                                                           FontSize="15" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Button>
+                                            <ComboBox x:Name="ModelBox" IsEditable="True"
+                                                      AutomationProperties.Name="Modelo de IA"/>
+                                        </DockPanel>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Grid Margin="0,14,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Style="{StaticResource SectionText}" Text="API key"/>
+                                        <PasswordBox x:Name="ApiKeyBox" AutomationProperties.Name="API key del proveedor"/>
+                                    </StackPanel>
+                                    <Button Grid.Column="1" Content="Borrar" Style="{StaticResource SubtleButton}"
+                                            Click="OnClearKey" VerticalAlignment="Bottom" Margin="10,0,0,0"
+                                            ToolTip="Olvidar la key guardada al guardar"/>
+                                </Grid>
+                                <TextBlock x:Name="KeyHint" Style="{StaticResource HintText}" Margin="0,8,0,0"/>
+
+                                <TextBlock Style="{StaticResource SectionText}" Text="Base URL" Margin="0,14,0,6"/>
+                                <TextBox x:Name="BaseUrlBox" AutomationProperties.Name="Base URL del proveedor"/>
+                                <TextBlock Style="{StaticResource HintText}" Margin="0,6,0,0" TextWrapping="Wrap"
+                                           Text="OpenCode GO: https://opencode.ai/zen/go/v1 · Ollama local: http://localhost:11434/v1 (sin key) · OpenRouter: https://openrouter.ai/api/v1. La key se cifra con DPAPI para tu usuario de Windows."/>
+                                <TextBlock x:Name="ModelsStatus" Style="{StaticResource HintText}" Margin="0,8,0,0" TextWrapping="Wrap"/>
+
+                                <WrapPanel Margin="0,12,0,0">
+                                    <Button x:Name="TestBtn" Content="Probar conexión" Click="OnTest" Width="160"/>
+                                    <TextBlock x:Name="TestStatus" Margin="12,0,0,0" VerticalAlignment="Center"
+                                               FontSize="11.5" TextWrapping="Wrap" MaxWidth="420"/>
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="Decisión inteligente"/>
+                                <TextBlock Style="{StaticResource HintText}" TextWrapping="Wrap" Margin="0,6,0,0"
+                                           Text="Opcional: Gemini elige cuál de las acciones es la más probable para lo que selecciones (unos 0,5 s). La barra aparece igual al instante; si no hay key, red o tarda, todo sigue como siempre."/>
+                                <CheckBox x:Name="DecisionToggle" Style="{StaticResource SwitchToggle}" Margin="0,12,0,0"
+                                          Content="Elegir la mejor acción con IA (Gemini Decisions)"/>
+                                <CheckBox x:Name="DecisionHide" Style="{StaticResource SwitchToggle}" Margin="0,10,0,0"
+                                          Content="Ocultar sugerencias cuando la IA no vea nada útil"/>
+                                <TextBlock Style="{StaticResource HintText}" Margin="0,4,0,0" TextWrapping="Wrap"
+                                           Text="Los aciertos exactos (correo, fecha, ruta, cálculo, enlace) nunca se ocultan: son hechos, no opiniones."/>
+
+                                <Grid Margin="0,14,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Style="{StaticResource SectionText}" Text="API key de Google AI Studio"/>
+                                        <PasswordBox x:Name="DecisionKeyBox" AutomationProperties.Name="API key de Gemini Decisions"/>
+                                    </StackPanel>
+                                    <Button Grid.Column="1" Content="Borrar" Style="{StaticResource SubtleButton}"
+                                            Click="OnClearDecisionKey" VerticalAlignment="Bottom" Margin="10,0,0,0"
+                                            ToolTip="Olvidar la key guardada al guardar"/>
+                                </Grid>
+                                <TextBlock x:Name="DecisionHint" Style="{StaticResource HintText}" Margin="0,8,0,0" TextWrapping="Wrap"/>
+                                <TextBlock Style="{StaticResource HintText}" Margin="0,6,0,0" TextWrapping="Wrap"
+                                           Text="El texto seleccionado se envía a Google. Si parece una contraseña o un token, no se envía nunca. La key se cifra con DPAPI para tu usuario de Windows."/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="Respuesta"/>
+                                <Grid Margin="0,14,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="14"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Style="{StaticResource SectionText}" Text="Idioma destino (traducir)"/>
+                                        <TextBox x:Name="LangBox" AutomationProperties.Name="Idioma de traducción"/>
+                                    </StackPanel>
+                                    <TextBlock Grid.Column="2" Style="{StaticResource HintText}" VerticalAlignment="Bottom"
+                                               TextWrapping="Wrap" Margin="0,0,0,6"
+                                               Text="Se usa en «Traducir» y en las recetas que incluyen {lang}."/>
+                                </Grid>
+
+                                <Button x:Name="AdvancedToggle" Style="{StaticResource SubtleButton}"
+                                        HorizontalAlignment="Left" Margin="0,14,0,0" Click="OnToggleAdvanced"
+                                        AutomationProperties.Name="Mostrar opciones avanzadas">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock x:Name="AdvancedChevron" Text="&#xE70D;" FontFamily="{StaticResource IconFont}"
+                                                   FontSize="10" VerticalAlignment="Center" Margin="0,0,8,0"
+                                                   Foreground="{DynamicResource TextSecondary}"/>
+                                        <TextBlock x:Name="AdvancedLabel" Text="Opciones avanzadas" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+
+                                <StackPanel x:Name="AdvancedPanel" Visibility="Collapsed" Margin="0,10,0,0">
+                                    <TextBlock Style="{StaticResource HintText}" TextWrapping="Wrap" Margin="0,0,0,10"
+                                               Text="Límites técnicos del proveedor. Los valores vacíos o fuera de rango impiden guardar y se señalan en su campo."/>
+                                    <TextBlock Style="{StaticResource SectionText}" Text="Instrucción de sistema (vacío = la de serie)"/>
+                                    <TextBox x:Name="SystemPromptBox" Height="76" AcceptsReturn="True" Margin="0,6,0,0"
+                                             TextWrapping="Wrap" VerticalScrollBarVisibility="Auto"
+                                             AutomationProperties.Name="Instrucción de sistema"/>
+                                    <Button Content="Usar la de serie" Style="{StaticResource SubtleButton}"
+                                            HorizontalAlignment="Left" Click="OnResetSystemPrompt" Margin="0,6,0,0"/>
+
+                                    <Grid Margin="0,14,0,0">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="14"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="14"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Style="{StaticResource SectionText}" Text="Temperatura (0–2)"/>
+                                            <TextBox x:Name="TemperatureBox" AutomationProperties.Name="Temperatura"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Style="{StaticResource SectionText}" Text="Máx. tokens (0 = del proveedor)"/>
+                                            <TextBox x:Name="MaxTokensBox" AutomationProperties.Name="Máximo de tokens"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="4">
+                                            <TextBlock Style="{StaticResource SectionText}" Text="Timeout en segundos (5–300)"/>
+                                            <TextBox x:Name="TimeoutBox" AutomationProperties.Name="Timeout en segundos"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <StackPanel Margin="0,14,0,0" HorizontalAlignment="Left" Width="260">
+                                        <TextBlock Style="{StaticResource SectionText}" Text="Máx. caracteres enviados (1000–200000)"/>
+                                        <TextBox x:Name="MaxInputBox" AutomationProperties.Name="Máximo de caracteres enviados"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button x:Name="GroqToggle" Grid.Column="0" Style="{StaticResource SubtleButton}"
+                                            HorizontalAlignment="Left" Click="OnToggleGroq"
+                                            AutomationProperties.Name="Mostrar transcripción de audio">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock x:Name="GroqChevron" Text="&#xE70D;" FontFamily="{StaticResource IconFont}"
+                                                       FontSize="10" VerticalAlignment="Center" Margin="0,0,8,0"
+                                                       Foreground="{DynamicResource TextSecondary}"/>
+                                            <TextBlock Text="Transcripción de audio (Groq) · opcional" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <TextBlock x:Name="GroqStateText" Grid.Column="1" Style="{StaticResource CaptionText}"
+                                               VerticalAlignment="Center" Margin="12,0,0,0"/>
+                                </Grid>
+                                <TextBlock Style="{StaticResource HintText}" Margin="0,6,0,0" TextWrapping="Wrap"
+                                           Text="Convierte audio a texto con Whisper usando una key propia de Groq. Solo se envía el archivo que elijas al transcribir."/>
+
+                                <StackPanel x:Name="GroqPanel" Visibility="Collapsed" Margin="0,10,0,0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                                            <TextBlock Style="{StaticResource SectionText}" Text="API key de Groq"/>
+                                            <PasswordBox x:Name="GroqKeyBox" AutomationProperties.Name="API key de Groq"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom">
+                                            <Button Content="Borrar" Style="{StaticResource SubtleButton}"
+                                                    Click="OnClearGroqKey" Margin="0,0,6,0"/>
+                                            <Button Content="Obtener key" Style="{StaticResource SubtleButton}"
+                                                    Click="OnOpenGroqKeys"/>
+                                        </StackPanel>
+                                    </Grid>
+                                    <TextBlock x:Name="GroqKeyHint" Style="{StaticResource HintText}" Margin="0,8,0,0"/>
+                                    <StackPanel Margin="0,12,0,0" HorizontalAlignment="Left" Width="260">
+                                        <TextBlock Style="{StaticResource SectionText}" Text="Modelo de transcripción"/>
+                                        <TextBox x:Name="GroqModelBox" AutomationProperties.Name="Modelo de transcripción"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- ===== SELECCIÓN Y ATAJOS ===== -->
+                    <StackPanel x:Name="PanelDisparadores" Visibility="Collapsed">
+                        <TextBlock Style="{StaticResource PageTitle}" Text="Selección y atajos"/>
+                        <TextBlock Style="{StaticResource PageSubtitle}" TextWrapping="Wrap"
+                                   Text="La barra se abre con el atajo (abajo). Los avisos al seleccionar están desactivados por defecto: la app no interrumpe hasta que la llamas."/>
+
+                        <Border Style="{StaticResource Card}" Margin="0,18,0,0">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="Avisos automáticos (opcional)"/>
+                                <TextBlock Style="{StaticResource HintText}" Margin="0,4,0,0" TextWrapping="Wrap"
+                                           Text="Desactivados por defecto para no ser invasiva. Al activarlos, seleccionar texto muestra una barra o un indicador sin pulsar nada."/>
+                                <CheckBox x:Name="AutoMouse" Style="{StaticResource SwitchToggle}" Margin="0,14,0,0"
+                                          Content="Al seleccionar con el ratón (arrastrar, doble clic o mantener pulsado)"/>
+                                <CheckBox x:Name="AutoKb" Style="{StaticResource SwitchToggle}" Margin="0,12,0,0"
+                                          Content="Al seleccionar con el teclado (Shift + flechas)"/>
+                                <CheckBox x:Name="SelectionPeek" Style="{StaticResource SwitchToggle}" Margin="0,14,0,0"
+                                          Content="Mostrar solo un indicador; el menú se abre al pasar el ratón o hacer clic"/>
+                                <TextBlock Style="{StaticResource HintText}" Margin="0,4,0,0" TextWrapping="Wrap"
+                                           Text="Así escribir para reemplazar el texto nunca se intercepta. El atajo abre el menú completo sin tocar lo que escribes."/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                        <TextBlock Style="{StaticResource CardTitle}" Text="Atajo para abrir la barra"/>
+                                        <TextBlock Style="{StaticResource HintText}" Margin="0,2,0,0"
+                                                   Text="La forma principal de invocarla: abre el menú completo con la selección actual."/>
+                                    </StackPanel>
+                                    <CheckBox x:Name="HotkeyEnabled" Grid.Column="1" Style="{StaticResource SwitchToggle}"
+                                              VerticalAlignment="Center" Margin="18,0,0,0"
+                                              AutomationProperties.Name="Activar atajo de la barra"/>
+                                </Grid>
+
+                                <Grid Margin="0,14,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" Background="{DynamicResource BgWell}" BorderBrush="{DynamicResource Stroke}"
+                                            BorderThickness="1" CornerRadius="{StaticResource RadiusS}" Height="40" Padding="12,0">
+                                        <TextBlock x:Name="HotkeyDisplay" FontFamily="{StaticResource FontMono}"
+                                                   FontSize="13.5" VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource TextPrimary}"/>
+                                    </Border>
+                                    <TextBox x:Name="HotkeyBox" Visibility="Collapsed"/>
+                                    <Button x:Name="HotkeyRecordBtn" Grid.Column="1" Content="Grabar"
+                                            Style="{StaticResource SubtleButton}" Margin="8,0,0,0" Width="96"
+                                            Click="OnRecordHotkey" ToolTip="Pulsa y luego la combinación de teclas"/>
+                                    <Button x:Name="HotkeyDefaultBtn" Grid.Column="2" Content="Por defecto"
+                                            Style="{StaticResource SubtleButton}" Margin="6,0,0,0" Width="110"
+                                            Click="OnResetHotkey"/>
+                                </Grid>
+                                <TextBlock x:Name="HotkeyHint" Style="{StaticResource HintText}" Margin="0,8,0,0" TextWrapping="Wrap"
+                                           Text="Funciona aunque desactives el aviso automático: selecciona texto y púlsala."/>
+
+                                <Border Style="{StaticResource Divider}" Margin="0,16,0,14"/>
+                                <TextBlock Style="{StaticResource SectionText}" Text="Atajo de dictado"/>
+                                <TextBox x:Name="DictationHotkeyBox" Margin="0,6,0,0"
+                                         AutomationProperties.Name="Atajo de dictado"
+                                         ToolTip="Ejemplo: Ctrl+Shift+D. Vacío = solo desde la bandeja."/>
+                                <TextBlock Style="{StaticResource HintText}" Margin="0,8,0,0" TextWrapping="Wrap"
+                                           Text="Primer toque: graba. Segundo toque: transcribe con Groq y escribe el texto donde tengas el cursor. Vacío = sin atajo (sigue disponible en la bandeja)."/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="Comportamiento de la barra"/>
+                                <CheckBox x:Name="SmartSuggest" Style="{StaticResource SwitchToggle}" Margin="0,14,0,0"
+                                          Content="Sugerir primero la acción más probable (★) según el texto"/>
+                                <TextBlock Style="{StaticResource HintText}" Margin="0,4,0,0" TextWrapping="Wrap"
+                                           Text="Si el texto parece un correo, una fecha, una ruta o un enlace con seguimiento, esa acción va primera."/>
+                                <CheckBox x:Name="ShowNumbers" Style="{StaticResource SwitchToggle}" Margin="0,12,0,0"
+                                          Content="Mostrar el número de atajo (1-9) en los chips"/>
+                                <CheckBox x:Name="DigitShortcuts" Style="{StaticResource SwitchToggle}" Margin="0,12,0,0"
+                                          Content="Atajos 1-9 para las primeras acciones"/>
+                                <CheckBox x:Name="SearchOnType" Style="{StaticResource SwitchToggle}" Margin="0,12,0,0"
+                                          Content="Buscar escribiendo (al abrir con el atajo o haciendo clic en el indicador)"/>
+
+                                <Grid Margin="0,16,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="14"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="14"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Style="{StaticResource SectionText}" Text="Acciones visibles (3–15)"/>
+                                        <TextBox x:Name="MaxIconsBox" MaxLength="2" AutomationProperties.Name="Acciones visibles"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Style="{StaticResource SectionText}" Text="Ocultar tras X s (0 = nunca)"/>
+                                        <TextBox x:Name="AutoHideBox" MaxLength="3" AutomationProperties.Name="Segundos antes de ocultar"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="4">
+                                        <TextBlock Style="{StaticResource SectionText}" Text="Longitud mínima (caracteres)"/>
+                                        <TextBox x:Name="MinLengthBox" MaxLength="3" AutomationProperties.Name="Longitud mínima"/>
+                                    </StackPanel>
+                                </Grid>
+                                <TextBlock Style="{StaticResource HintText}" Margin="0,6,0,0"
+                                           Text="El resto de acciones se agrupa en «···»."/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="Apps excluidas"/>
+                                <TextBlock Style="{StaticResource HintText}" Margin="0,4,0,8" TextWrapping="Wrap"
+                                           Text="Una por línea, solo el nombre del proceso (con o sin .exe). La barra no aparecerá en esas apps. Selbar siempre está excluida."/>
+                                <TextBox x:Name="ExcludedBox" Height="104" AcceptsReturn="True"
+                                         VerticalScrollBarVisibility="Auto" AutomationProperties.Name="Aplicaciones excluidas"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                            <CheckBox x:Name="StartWindows" Style="{StaticResource SwitchToggle}"
+                                      Content="Iniciar con Windows"/>
+                        </Border>
+                    </StackPanel>
+
+                    <!-- ===== APARIENCIA ===== -->
+                    <StackPanel x:Name="PanelApariencia" Visibility="Collapsed">
+                        <TextBlock Style="{StaticResource PageTitle}" Text="Apariencia"/>
+                        <TextBlock Style="{StaticResource PageSubtitle}" TextWrapping="Wrap"
+                                   Text="Tema y color de Selbar. Por defecto sigue el tema del sistema."/>
+
+                        <Border Style="{StaticResource SettingsCard}" Margin="0,18,0,0">
+                            <StackPanel>
+                                <Border Style="{StaticResource SettingsRow}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel Grid.Column="0" Margin="0,0,24,0" VerticalAlignment="Center">
+                                            <TextBlock Text="Modo de la aplicación" Style="{StaticResource CardTitle}"/>
+                                            <TextBlock Text="Sistema sigue el ajuste claro u oscuro de Windows."
+                                                       Style="{StaticResource HintText}" Margin="0,2,0,0"/>
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <ComboBox x:Name="ThemeBox" Width="190" SelectionChanged="OnThemeChanged"
+                                                      AutomationProperties.Name="Tema de la aplicación">
+                                                <ComboBoxItem Content="Sistema" Tag="system"/>
+                                                <ComboBoxItem Content="Claro" Tag="light"/>
+                                                <ComboBoxItem Content="Oscuro" Tag="dark"/>
+                                            </ComboBox>
+                                            <TextBlock x:Name="ThemeAppliedText" Style="{StaticResource CaptionText}"
+                                                       HorizontalAlignment="Right" Margin="0,4,2,0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <Border Style="{StaticResource SettingsRow}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Grid.Column="0" Width="32" Height="32" CornerRadius="{StaticResource RadiusS}"
+                                                Background="{DynamicResource AccentFill}" Margin="0,0,12,0"
+                                                VerticalAlignment="Center"/>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="0,0,24,0">
+                                            <TextBlock Text="Color de acento" Style="{StaticResource CardTitle}"/>
+                                            <TextBlock Text="Se toma del color de énfasis de Windows y se adapta para mantener el contraste."
+                                                       Style="{StaticResource HintText}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                                        </StackPanel>
+                                        <Button Grid.Column="2" Content="Cambiar en Windows"
+                                                Style="{StaticResource SubtleButton}" Click="OnOpenWindowsColors"
+                                                VerticalAlignment="Center"/>
+                                    </Grid>
+                                </Border>
+
+                                <Border Style="{StaticResource SettingsRow}" BorderThickness="0">
+                                    <StackPanel>
+                                        <TextBlock Text="Animaciones" Style="{StaticResource CardTitle}"/>
+                                        <TextBlock x:Name="AnimationsHint" Style="{StaticResource HintText}" Margin="0,2,0,0"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Style="{StaticResource HintText}" Margin="4,12,0,0" TextWrapping="Wrap"
+                                   Text="El tema se previsualiza al instante; se conserva al guardar. Al descartar vuelve al último tema guardado."/>
+
+                        <Button x:Name="AppearanceHelpToggle" Style="{StaticResource SubtleButton}"
+                                HorizontalAlignment="Left" Margin="0,12,0,0" Click="OnToggleAppearanceHelp"
+                                AutomationProperties.Name="Mostrar cómo se adapta a Windows">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock x:Name="AppearanceHelpChevron" Text="&#xE70D;" FontFamily="{StaticResource IconFont}"
+                                           FontSize="10" VerticalAlignment="Center" Margin="0,0,8,0"
+                                           Foreground="{DynamicResource TextSecondary}"/>
+                                <TextBlock Text="Cómo se adapta a Windows" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                        <TextBlock x:Name="AppearanceHelpText" Style="{StaticResource HintText}" Margin="4,8,0,0"
+                                   TextWrapping="Wrap" Visibility="Collapsed"
+                                   Text="Las ventanas usan esquinas redondeadas y el borde de Windows 11, con superficies sólidas del tema. Los paneles flotantes son ventanas sin activación para no quitarte el foco de la app en la que escribes. El material Mica está desactivado a propósito por su mal resultado en esta configuración WPF."/>
+                    </StackPanel>
+
+                    <!-- ===== DATOS E INTEGRACIONES ===== -->
+                    <StackPanel x:Name="PanelAvanzado" Visibility="Collapsed">
+                        <TextBlock Style="{StaticResource PageTitle}" Text="Datos e integraciones"/>
+                        <TextBlock Style="{StaticResource PageSubtitle}" TextWrapping="Wrap"
+                                   Text="Historial, Obsidian, voz, perfiles y copias de seguridad."/>
+
+                        <Border Style="{StaticResource Card}" Margin="0,18,0,0">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="Historial y privacidad"/>
+                                <CheckBox x:Name="HistoryEnabled" Style="{StaticResource SwitchToggle}" Margin="0,14,0,0"
+                                          Content="Guardar los resultados de IA"/>
+                                <CheckBox x:Name="HistoryEncrypt" Style="{StaticResource SwitchToggle}" Margin="0,12,0,0"
+                                          Content="Cifrar el historial con DPAPI"/>
+                                <CheckBox x:Name="HistoryClearOnExit" Style="{StaticResource SwitchToggle}" Margin="0,12,0,0"
+                                          Content="Borrar el historial al salir de Selbar"/>
+                                <TextBlock Style="{StaticResource HintText}" Margin="0,10,0,10" TextWrapping="Wrap"
+                                           Text="Incluye el texto original y el resultado, para poder repetir la acción. Se escribe en history.json de la carpeta de datos. Desactivar «Guardar» no borra las entradas existentes."/>
+                                <Button Content="Vaciar historial ahora" Style="{StaticResource DangerButton}"
+                                        HorizontalAlignment="Left" Click="OnClearHistory"/>
+                                <TextBlock x:Name="HistoryStatus" Style="{StaticResource HintText}" Margin="0,8,0,0"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="Obsidian"/>
+                                <TextBlock Style="{StaticResource SectionText}" Text="Vault" Margin="0,14,0,6"/>
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Content="Elegir…" Style="{StaticResource SubtleButton}"
+                                            Margin="8,0,0,0" Click="OnPickObsidianVault"/>
+                                    <TextBox x:Name="ObsidianVaultBox" AutomationProperties.Name="Carpeta del vault de Obsidian"
+                                             ToolTip="Carpeta raíz de tu vault (por ejemplo C:\Users\tu-usuario\Documents\MiVault)"/>
+                                </DockPanel>
+                                <TextBlock Style="{StaticResource SectionText}" Text="Subcarpeta de las notas" Margin="0,12,0,6"/>
+                                <TextBox x:Name="ObsidianFolderBox" AutomationProperties.Name="Subcarpeta de notas"
+                                         ToolTip="Se crea dentro del vault si no existe"/>
+                                <TextBlock x:Name="ObsidianHint" Style="{StaticResource HintText}" Margin="0,8,0,0"
+                                           TextWrapping="Wrap"
+                                           Text="«Guardar en Obsidian» escribe una nota Markdown con el texto seleccionado. Todo es local. Al guardar con un vault elegido se activa esa acción si aún no lo estaba."/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="Lectura en voz alta"/>
+                                <Grid Margin="0,12,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="120"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="Velocidad (0,5 a 3; 1 = normal)"
+                                               Style="{StaticResource HintText}" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="1" x:Name="SpeakRateBox" Margin="8,0,0,0"
+                                             AutomationProperties.Name="Velocidad de la voz"/>
+                                </Grid>
+                                <TextBlock x:Name="VoiceInfoText" Style="{StaticResource HintText}" Margin="0,8,0,0"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="Perfiles por aplicación"/>
+                                <TextBlock Style="{StaticResource HintText}" Margin="0,4,0,8" TextWrapping="Wrap"
+                                           Text="Una regla por línea: proceso = ids de acción que se ocultan. Prefijo «!» para dejar el perfil desactivado. Los ids aparecen en Ajustes → Acciones (detalle de la acción)."/>
+                                <TextBox x:Name="ProfilesBox" AcceptsReturn="True" Height="86"
+                                         VerticalScrollBarVisibility="Auto" FontFamily="{StaticResource FontMono}"
+                                         AutomationProperties.Name="Perfiles por aplicación"
+                                         ToolTip="Una regla por línea: proceso = id1, id2"/>
+                                <TextBlock Style="{StaticResource HintText}" Margin="0,8,0,0" TextWrapping="Wrap"
+                                           Text="Ejemplo: chrome = ai.todos, text.qr. Las líneas mal escritas impiden guardar y se señalan con su número."/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource Card}" Margin="0,14,0,0">
+                            <StackPanel>
+                                <TextBlock Style="{StaticResource CardTitle}" Text="Copias y diagnóstico"/>
+                                <TextBlock Style="{StaticResource SectionText}" Text="Carpeta de datos" Margin="0,14,0,6"/>
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Content="Abrir" Style="{StaticResource SubtleButton}"
+                                            Margin="8,0,0,0" Click="OnOpenDataFolder"/>
+                                    <TextBox x:Name="DataPathBox" IsReadOnly="True"
+                                             ToolTip="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+                                </DockPanel>
+                                <WrapPanel Margin="0,12,0,0">
+                                    <Button Content="Abrir log" Style="{StaticResource SubtleButton}"
+                                            Click="OnOpenLog" Margin="0,0,6,0" ToolTip="Diagnóstico de la app"/>
+                                    <Button Content="Copiar diagnóstico" Style="{StaticResource SubtleButton}"
+                                            Click="OnCopyDiagnostics" Margin="0,0,6,0"
+                                            ToolTip="Copia versión, proveedor, modelo y rutas al portapapeles"/>
+                                    <Button Content="Exportar guardados…" Style="{StaticResource SubtleButton}"
+                                            Click="OnExportSettings" Margin="0,0,6,0"
+                                            ToolTip="Guarda una copia de los ajustes guardados (sin claves de IA ni Groq)"/>
+                                    <Button Content="Importar ajustes…" Style="{StaticResource SubtleButton}"
+                                            Click="OnImportSettings"
+                                            ToolTip="Carga ajustes desde un archivo exportado"/>
+                                </WrapPanel>
+                                <TextBlock x:Name="AdvancedStatus" Style="{StaticResource HintText}" Margin="0,8,0,0"
+                                           TextWrapping="Wrap"/>
+                                <TextBlock x:Name="AboutText" Style="{StaticResource HintText}" Margin="0,12,0,0"
+                                           TextWrapping="Wrap"/>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource Card}" Margin="0,14,0,0"
+                                BorderBrush="{DynamicResource DangerStroke}" Background="{DynamicResource DangerSoft}">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="&#xE7BA;" FontFamily="{StaticResource IconFont}" FontSize="15"
+                                               Foreground="{DynamicResource Danger}" VerticalAlignment="Center"
+                                               Margin="0,0,10,0"/>
+                                    <TextBlock Style="{StaticResource CardTitle}" Text="Restablecer Selbar"
+                                               Foreground="{DynamicResource Danger}" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <TextBlock Style="{StaticResource HintText}" Margin="0,8,0,12" TextWrapping="Wrap"
+                                           Text="Elimina las claves de IA y Groq, las acciones propias, los atajos, el tema y las integraciones. Conserva el historial y no vuelve a mostrar la bienvenida. Desactiva el inicio con Windows."/>
+                                <Button Content="Restablecer todos los ajustes" Style="{StaticResource DangerButton}"
+                                        HorizontalAlignment="Left" Click="OnResetAll"/>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+
+                </Grid>
+            </ScrollViewer>
+
+            <!-- Pie fijo: CTA única y estado real de guardado -->
+            <Border Grid.Row="1" Background="{DynamicResource BgLayer}"
+                    BorderBrush="{DynamicResource StrokeSubtle}" BorderThickness="0,1,0,0"
+                    Padding="24,12">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,16,0">
+                        <TextBlock x:Name="DirtyHint" Text="Cambios sin guardar" FontSize="12"
+                                   Foreground="{DynamicResource Warning}" Visibility="Collapsed"/>
+                        <TextBlock x:Name="SaveStatus" FontSize="12" Foreground="{DynamicResource Danger}"
+                                   TextWrapping="Wrap" Visibility="Collapsed" Margin="0,2,0,0"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Content="Cerrar" Style="{StaticResource SubtleButton}" Click="OnClose"
+                                Width="96" Margin="0,0,8,0"/>
+                        <Button x:Name="DiscardButton" Content="Descartar" Style="{StaticResource SubtleButton}"
+                                Click="OnDiscard" Width="100" Margin="0,0,8,0" Visibility="Collapsed"
+                                ToolTip="Volver a los ajustes guardados sin cerrar"/>
+                        <Button x:Name="SaveButton" Content="Guardar cambios" Style="{StaticResource AccentButton}"
+                                Click="OnSave" Width="150" ToolTip="Guardar los cambios (Ctrl+S)"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

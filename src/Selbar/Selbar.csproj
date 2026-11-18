@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <SupportedOSPlatformVersion>10.0.17763.0</SupportedOSPlatformVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>Selbar</AssemblyName>
+    <RootNamespace>Selbar</RootNamespace>
+    <Version>0.13.6</Version>
+    <FileVersion>0.13.6.0</FileVersion>
+    <Product>Selbar</Product>
+    <AssemblyTitle>Selbar</AssemblyTitle>
+    <Company>Selbar</Company>
+    <Description>Menú flotante con acciones de IA y utilidades al seleccionar texto en Windows</Description>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <LangVersion>latest</LangVersion>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <DebugType Condition="'$(Configuration)' == 'Release'">embedded</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="Assets\app.ico" CopyToOutputDirectory="Never" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="QRCoder" Version="1.6.0" />
+  </ItemGroup>
+
+</Project>

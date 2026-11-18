@@ -1,0 +1,182 @@
+<ui:FluentWindow x:Class="Selbar.Ui.ClipboardHistoryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="clr-namespace:Selbar.Ui"
+        Title="Selbar · Portapapeles"
+        TitleBarTitle="Selbar" Height="560" Width="460"
+        MinHeight="440" MinWidth="700">
+    <Grid Background="{DynamicResource BgWindow}" Margin="32,20,32,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Cabecera -->
+        <Grid Grid.Row="0" Margin="0,0,0,16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Style="{StaticResource PageTitle}" Text="Portapapeles"/>
+                <TextBlock Style="{StaticResource PageSubtitle}"
+                           Text="Textos copiados con Selbar. No es el historial de Windows (Win+V)."/>
+            </StackPanel>
+            <Button x:Name="ManageBtn" Grid.Column="1" Style="{StaticResource IconButton}"
+                    Content="&#xE712;" ToolTip="Opciones del historial de copias"
+                    AutomationProperties.Name="Opciones del historial de copias"
+                    VerticalAlignment="Top" Click="OnManage">
+                <Button.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Alcance y límites" Click="OnShowInfo"/>
+                        <Separator/>
+                        <MenuItem x:Name="ClearMenuItem" Header="Vaciar historial de copias" Click="OnClear"/>
+                    </ContextMenu>
+                </Button.ContextMenu>
+            </Button>
+        </Grid>
+
+        <!-- Lista + vista previa -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="340" MinWidth="280"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*" MinWidth="280"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="0,0,0,8">
+                    <TextBox x:Name="FilterBox" TextChanged="OnFilter" PreviewKeyDown="OnFilterKeyDown" Padding="32,6,10,6"
+                             ToolTip="Filtrar por texto" AutomationProperties.Name="Buscar en las copias"/>
+                    <TextBlock Text="&#xE721;" FontFamily="{StaticResource IconFont}" FontSize="15"
+                               Foreground="{DynamicResource TextTertiary}" Margin="11,0,0,0"
+                               VerticalAlignment="Center" IsHitTestVisible="False"/>
+                    <TextBlock Text="Buscar…" Foreground="{DynamicResource TextTertiary}"
+                               Margin="33,0,0,0" VerticalAlignment="Center" IsHitTestVisible="False"
+                               Visibility="{Binding Text, ElementName=FilterBox, Converter={StaticResource EmptyToVisible}}"/>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Border Background="{DynamicResource BgCard}" BorderBrush="{DynamicResource StrokeSubtle}"
+                            BorderThickness="1" CornerRadius="{StaticResource RadiusM}" Padding="4">
+                        <ListBox x:Name="EntryList" SelectionChanged="OnSelect" MouseDoubleClick="OnDoubleClick"
+                                 AutomationProperties.Name="Textos copiados">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="10,9">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Border Width="32" Height="32" CornerRadius="{StaticResource RadiusS}" Background="{DynamicResource BgBadge}"
+                                                BorderBrush="{DynamicResource StrokeSubtle}" BorderThickness="1">
+                                            <TextBlock Text="&#xE8C8;" FontFamily="{StaticResource IconFont}"
+                                                       FontSize="14" Foreground="{DynamicResource TextSecondary}"
+                                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                        <StackPanel Grid.Column="1" Margin="12,0,0,0" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Preview}" FontSize="12.5"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                            <TextBlock Text="{Binding When, StringFormat='{}{0:g}'}" FontSize="10.5"
+                                                       Foreground="{DynamicResource TextTertiary}"
+                                                       Margin="0,2,0,0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Border>
+
+                    <StackPanel x:Name="EmptyHint" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                Visibility="Collapsed">
+                        <TextBlock Text="&#xE8C8;" FontFamily="{StaticResource IconFont}" FontSize="30"
+                                   Foreground="{DynamicResource TextTertiary}" HorizontalAlignment="Center"/>
+                        <TextBlock x:Name="EmptyText" Text="Aún no copiaste nada con Selbar."
+                                   Foreground="{DynamicResource TextTertiary}" FontSize="12.5"
+                                   HorizontalAlignment="Center" Margin="0,10,0,0" TextAlignment="Center"
+                                   MaxWidth="250" TextWrapping="Wrap"/>
+                        <Button x:Name="ClearFilterBtn" Content="Quitar filtro" Style="{StaticResource SubtleButton}"
+                                Margin="0,10,0,0" HorizontalAlignment="Center" Visibility="Collapsed"
+                                Click="OnClearFilter"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+
+            <GridSplitter Grid.Column="1" Width="10" HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch" ResizeBehavior="PreviousAndNext"/>
+
+            <Border Grid.Column="2" Background="{DynamicResource BgCard}"
+                    BorderBrush="{DynamicResource StrokeSubtle}" BorderThickness="1"
+                    CornerRadius="{StaticResource RadiusM}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" BorderBrush="{DynamicResource StrokeSubtle}" BorderThickness="0,0,0,1"
+                            Padding="16,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock x:Name="PreviewMeta" Grid.Column="0" FontSize="11"
+                                       Foreground="{DynamicResource TextTertiary}" VerticalAlignment="Center"
+                                       Margin="0,0,10,0" TextWrapping="Wrap"/>
+                            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                <Button x:Name="CopyBtn" Content="Copiar y cerrar" Style="{StaticResource AccentButton}"
+                                        Margin="0,0,6,0" Click="OnCopy" IsEnabled="False"/>
+                                <Button x:Name="PasteBtn" Content="Pegar" Style="{StaticResource SubtleButton}"
+                                        Margin="0,0,4,0" Click="OnPaste" IsEnabled="False"
+                                        ToolTip="Pega el texto en la ventana anterior (mejor esfuerzo)"/>
+                                <Button x:Name="MoreBtn" Style="{StaticResource IconButton}" Content="&#xE712;"
+                                        ToolTip="Más opciones de la entrada"
+                                        AutomationProperties.Name="Más opciones de la entrada"
+                                        Click="OnMore">
+                                    <Button.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Header="Copiar sin cerrar" Click="OnCopyKeep"/>
+                                            <Separator/>
+                                            <MenuItem x:Name="DeleteMenuItem" Header="Eliminar entrada"
+                                                      Click="OnDelete"/>
+                                        </ContextMenu>
+                                    </Button.ContextMenu>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <Grid Grid.Row="1">
+                        <TextBox x:Name="PreviewBox" IsReadOnly="True" TextWrapping="Wrap"
+                                 VerticalScrollBarVisibility="Auto" AcceptsReturn="True"
+                                 Background="Transparent" BorderThickness="0" Padding="16,12,8,12"
+                                 FontSize="13" VerticalAlignment="Stretch"/>
+                        <TextBlock x:Name="PreviewPlaceholder" Text="Selecciona un texto para verlo aquí."
+                                   Foreground="{DynamicResource TextTertiary}" FontSize="12.5"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   IsHitTestVisible="False"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Pie: estado y conteo; sin botones destructivos permanentes. -->
+        <Grid Grid.Row="2" Margin="0,12,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="StatusText" Style="{StaticResource CaptionText}"
+                       VerticalAlignment="Center" TextWrapping="Wrap"/>
+            <TextBlock x:Name="CountText" Grid.Column="1" Style="{StaticResource CaptionText}"
+                       VerticalAlignment="Center" Margin="12,0,0,0"/>
+        </Grid>
+    </Grid>
+</ui:FluentWindow>

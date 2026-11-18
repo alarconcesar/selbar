@@ -1,0 +1,31 @@
+# Compilados
+bin/
+obj/
+dist/
+*.user
+
+# Artefactos de build
+Selbar-*-portable.zip
+Selbar-*-setup.exe
+icon-preview.png
+
+# Datos locales del modo portable
+data/
+
+# Secretos: nunca se versionan
+.env*
+*.pfx
+*.pem
+*.cer
+keys.json
+secrets.json
+credentials.json
+
+
+# Logs y basura del sistema
+*.log
+.DS_Store
+Thumbs.db
+
+# Salidas de publish (no se versionan)
+build-*/

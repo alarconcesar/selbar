@@ -147,16 +147,14 @@ public static class DateTools
     /// <summary>Suma días sin lanzar si se sale del rango de DateTime.</summary>
     private static bool TryAddDays(DateTime day, int days, out DateTime result)
     {
-        result = default;
-        try
+        if (days > 0 && day.Date > DateTime.MaxValue.Date.AddDays(-days) ||
+            days < 0 && day.Date < DateTime.MinValue.Date.AddDays(-days))
         {
-            result = day.AddDays(days);
-            return true;
-        }
-        catch (ArgumentOutOfRangeException)
-        {
+            result = default;
             return false;
         }
+        result = day.Date.AddDays(days);
+        return true;
     }
 
     /// <summary>Próximo 29 de febrero (hoy incluido si cae en bisiesto).</summary>

@@ -649,7 +649,7 @@ internal static class Program
         Check("fecha mes abreviado", DateTools.TryParse("12 mar. 2025", hoy, out var dmar) && dmar == new DateTime(2025, 3, 12));
         Check("fecha con guion y mes", DateTools.TryParse("12-mar-2025", hoy, out var dgm) && dgm == new DateTime(2025, 3, 12));
         Check("fecha con 'a las'", DateTools.TryParse("12/03/2025 a las 3pm", hoy, out var dal) && dal == new DateTime(2025, 3, 12));
-        Check("fecha en MaxValue no lanza", DateTools.TryParse("mañana", DateTime.MaxValue, out _));
+        Check("fecha en MaxValue no lanza", !DateTools.TryParse("mañana", DateTime.MaxValue, out _));
         Check("describe en MinValue no lanza", !string.IsNullOrEmpty(DateTools.Describe("ayer", DateTime.MinValue)));
         var dateRx = new Regex(presets.First(a => a.Id == "date.info").MatchRegex!);
         Check("chip fecha", dateRx.IsMatch("12/03/2025") && dateRx.IsMatch("mañana")

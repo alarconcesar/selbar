@@ -208,6 +208,7 @@ public static class HistoryStore
         var all = new List<HistoryEntry>();
         int broken = 0;
         int badFields = 0;
+        _corruptBackedUp = false;
         try
         {
             using var doc = JsonDocument.Parse(json, new JsonDocumentOptions
@@ -225,7 +226,9 @@ public static class HistoryStore
             foreach (var item in doc.RootElement.EnumerateArray())
             {
                 if (item.ValueKind != JsonValueKind.Object) { broken++; continue; } // nulls y basura
-                all.Add(ReadEntry(item, ref badFields));
+                var entry = ReadEntry(item, ref badFields);
+                if (entry is null) { broken++; continue; }
+                all.Add(entry);
             }
         }
         catch
@@ -273,7 +276,7 @@ public static class HistoryStore
     /// Convierte un elemento JSON en entrada sin que un campo con el tipo
     /// equivocado se lleve por delante el texto de la entrada entera.
     /// </summary>
-    private static HistoryEntry ReadEntry(JsonElement item, ref int badFields)
+    private static HistoryEntry? ReadEntry(JsonElement item, ref int badFields)
     {
         var fields = new Dictionary<string, JsonElement>(StringComparer.OrdinalIgnoreCase);
         foreach (var property in item.EnumerateObject()) fields[property.Name] = property.Value;
@@ -289,7 +292,11 @@ public static class HistoryStore
             if (when.ValueKind == JsonValueKind.String &&
                 DateTime.TryParse(when.GetString(), CultureInfo.InvariantCulture, DateTimeStyles.None, out var date))
                 entry.When = date;
-            else badFields++;
+            else
+            {
+                badFields++;
+                return null;
+            }
         }
         entry.ActionId = ReadString(fields, nameof(HistoryEntry.ActionId), ref badFields) ?? "";
         entry.Action = ReadString(fields, nameof(HistoryEntry.Action), ref badFields) ?? "";

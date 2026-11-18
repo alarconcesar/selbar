@@ -121,6 +121,7 @@ public static class ActionPresets
             MatchRegex=@"^(?i)(?:https?://)?(?:www\.)?(?:bit\.ly|t\.co|goo\.gl|tinyurl\.com|ow\.ly|is\.gd|buff\.ly|cutt\.ly|rebrand\.ly|rb\.gy|t\.ly|lnkd\.in|amzn\.to|youtu\.be|fb\.me|trib\.al|shorturl\.at|linktr\.ee)/\S+$" },
         new() { Id="link.summarize", Title="Resumir enlace", Category=ActionCategory.AiExplain, Kind=ActionKind.Ai, Output=OutputMode.Popup, Order=36, IsEnabled=false,
             Description="Lee la página (o el PDF) y lo resume en 5 puntos",
+            PromptTemplate="Resume el contenido de la página enlazada en 5 puntos clave en {lang}. Al final añade una línea con la idea principal.\n\n{text}",
             MatchRegex=@"^(?i)https?://\S+$", MaxLength=400 },
         new() { Id="place.maps", Title="Abrir en Maps", Category=ActionCategory.Search, Kind=ActionKind.NoAi, Output=OutputMode.Browser, Order=208,
             Description="Busca la dirección en Google Maps",

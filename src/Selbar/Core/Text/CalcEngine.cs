@@ -531,7 +531,10 @@ public static class CalcEngine
 
     private static async Task<IReadOnlyDictionary<string, double>?> GetRatesAsync(CancellationToken ct)
     {
-        if (Environment.GetEnvironmentVariable("SELBAR_OFFLINE") == "1") return null;
+        bool offline = Environment.GetEnvironmentVariable("SELBAR_OFFLINE") == "1";
+        var provider = RatesProvider;
+        // Offline bloquea la red real, pero deja inyectar proveedores deterministas en tests.
+        if (offline && provider is null) return null;
 
         lock (Cache)
         {
@@ -541,7 +544,7 @@ public static class CalcEngine
 
         try
         {
-            var provider = RatesProvider ?? FetchRatesAsync;
+            provider ??= FetchRatesAsync;
             var rates = await provider(ct).ConfigureAwait(false);
             if (rates == null) return null;
             lock (Cache) Cache["usd"] = (rates, DateTime.UtcNow);
